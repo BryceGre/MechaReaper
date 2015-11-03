@@ -100,8 +100,8 @@ public class MechController : MonoBehaviour {
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 		Vector3 lookAt = Camera.main.transform.forward;
 		foreach (GameObject enemy in enemies) {
-			Vector3 toEnemy = enemy.transform.position - gameObject.transform.position;
-			if (Vector3.Dot(lookAt, toEnemy) > 0.99) {
+			Vector3 toEnemy = Vector3.Normalize(enemy.transform.position - Camera.main.transform.position);
+			if (Vector3.Dot(lookAt, toEnemy) > 0.9) {
 				targetEnemies.Add(enemy);
 				if (Input.GetButtonDown (MissileButtonName) && readyToMissile) {
 					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, gameObject.transform.rotation);
