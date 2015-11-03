@@ -8,6 +8,14 @@ public class GameController : MonoBehaviour {
 	public Transform EnemyMechPrefab = null;
 	private Transform[] enemyList = null;
 
+	private int railgunDamage = 12;
+	private float railgunCooldown = 1.0f;
+	private int autocannonDamage = 6;
+	private float autocannonCooldown = 0.5f;
+	private int machinegunDamage = 3;
+	private float machinegunCooldown = 0.25f;
+
+
 	private bool inProgress = true;
 	// Use this for initialization
 	void Start () {
@@ -42,7 +50,7 @@ public class GameController : MonoBehaviour {
 
 	void hitScanHit(GameObject enemyObject)
 	{
-		enemyObject.BroadcastMessage ("destroyEnemy");
-
+		//enemyObject.GetComponent<EnemyShipController> ().applyDamage (autocannonDamage);
+		enemyObject.SendMessage ("applyDamage", autocannonDamage);
 	}
 }
