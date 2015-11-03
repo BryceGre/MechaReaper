@@ -9,11 +9,8 @@ public class GameController : MonoBehaviour {
 	private Transform[] enemyList = null;
 
 	private int railgunDamage = 12;
-	private float railgunCooldown = 1.0f;
 	private int autocannonDamage = 6;
-	private float autocannonCooldown = 0.5f;
 	private int machinegunDamage = 3;
-	private float machinegunCooldown = 0.25f;
 
 
 	private bool inProgress = true;

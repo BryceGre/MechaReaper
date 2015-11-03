@@ -46,7 +46,7 @@ public class EnemyShipController : MonoBehaviour {
 		Destroy (this.gameObject);
 	}
 
-	void applyDamage(int damage)
+	public void applyDamage(int damage)
 	{
 		health -= damage;
 

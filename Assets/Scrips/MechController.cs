@@ -18,7 +18,11 @@ public class MechController : MonoBehaviour {
 	//Raycasting Variables
 	public string fireButtonName = "Fire1";
 	private bool readyToFire = true;
+	private int cooldown = 0;
 
+	private float railgunCooldown = 1.0f;
+	private float autocannonCooldown = 0.5f;
+	private float machinegunCooldown = 0.25f;
 
 
 	// Use this for initialization
