@@ -5,11 +5,10 @@ public class EnemyShipController : MonoBehaviour {
 	public Transform Player = null;
 	public float MoveSpeed = 20.0f;
 	public float RotateSpeed = 1.0f;
-
+	public int health = 10;
 	private bool pass = false;
-
-
-	public GameObject explosion = null;
+	
+	public GameObject explosion;
 
 
 	// Use this for initialization
@@ -19,6 +18,12 @@ public class EnemyShipController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (health <= 0) {
+			Instantiate (explosion, this.transform.position, this.transform.rotation);
+			Destroy (this.gameObject);
+		}
+
 		Vector3 toPlayer = Player.transform.position - gameObject.transform.position;
 		float distance = Vector3.Distance (gameObject.transform.position, Player.transform.position);
 		if (distance < 10.0f && pass == false) {
@@ -39,8 +44,12 @@ public class EnemyShipController : MonoBehaviour {
 	void destroyEnemy(){
 		Instantiate (explosion, this.transform.position, this.transform.rotation);
 		Destroy (this.gameObject);
-
 	}
 
+	void applyDamage(int damage)
+	{
+		health -= damage;
+
+	}
 
 }
