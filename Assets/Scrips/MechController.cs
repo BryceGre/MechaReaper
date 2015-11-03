@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MechController : MonoBehaviour {
 	public float moveSpeed = 0.5f;
 	public float lookSpeed = 2.0f;
+	
+	public Transform MissilePrefab = null;
+	public Texture2D targetBoxImage = null;
 
 	private CharacterController controller;
 	private GameObject boostLeft;
@@ -13,16 +17,17 @@ public class MechController : MonoBehaviour {
 	
 	private Vector3 moveDir = Vector3.zero;
 
+	private List<GameObject> targetEnemies = null;
 
+	private float targetBoxWidth = 256;
+	private float targetBoxHeight = 256;
 
 	//Raycasting Variables
 	public string fireButtonName = "Fire1";
 	private bool readyToFire = true;
-	private int cooldown = 0;
+	public string MissileButtonName = "FireRight";
+	private bool readyToMissile = true;
 
-	private float railgunCooldown = 1.0f;
-	private float autocannonCooldown = 0.5f;
-	private float machinegunCooldown = 0.25f;
 
 
 	// Use this for initialization
@@ -33,6 +38,7 @@ public class MechController : MonoBehaviour {
 		boostTop =		gameObject.transform.Find ("Body").Find ("Boost_Top").gameObject;
 		boostBottom =	gameObject.transform.Find ("Body").Find ("Boost_Bottom").gameObject;
 		Cursor.visible = false;
+		targetEnemies = new List<GameObject> ();
 	}
 	
 	// Update is called once per frame
@@ -90,5 +96,31 @@ public class MechController : MonoBehaviour {
 
 		}
 
+		targetEnemies.Clear ();
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+		Vector3 lookAt = Camera.main.transform.forward;
+		foreach (GameObject enemy in enemies) {
+			Vector3 toEnemy = enemy.transform.position - gameObject.transform.position;
+			if (Vector3.Dot(lookAt, toEnemy) > 0.99) {
+				targetEnemies.Add(enemy);
+				if (Input.GetButtonDown (MissileButtonName) && readyToMissile) {
+					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, gameObject.transform.rotation);
+					missile.GetComponent<MissileController>().Target = enemy.transform;
+				}
+			}
+		}
+	}
+
+	void OnGUI() {
+		foreach (GameObject enemy in targetEnemies) {
+			Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
+			float distance = Vector3.Distance(enemy.transform.position, Camera.main.transform.position);
+			float width = targetBoxWidth / distance * 10;
+			float height = targetBoxHeight / distance * 10;
+			float boxX = screenPos.x - (width / 2);
+			float boxY = Screen.height - screenPos.y - (height / 2);
+
+			GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
+		}
 	}
 }
