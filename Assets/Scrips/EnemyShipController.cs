@@ -8,6 +8,10 @@ public class EnemyShipController : MonoBehaviour {
 
 	private bool pass = false;
 
+
+	public GameObject explosion = null;
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -31,4 +35,12 @@ public class EnemyShipController : MonoBehaviour {
 
 		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
 	}
+
+	void destroyEnemy(){
+		Instantiate (explosion, this.transform.position, this.transform.rotation);
+		Destroy (this.gameObject);
+
+	}
+
+
 }

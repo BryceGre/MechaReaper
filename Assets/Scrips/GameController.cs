@@ -6,10 +6,12 @@ public class GameController : MonoBehaviour {
 	public Transform Player = null;
 	public Transform EnemyShipPrefab = null;
 	public Transform EnemyMechPrefab = null;
+	private Transform[] enemyList = null;
 
 	private bool inProgress = true;
 	// Use this for initialization
 	void Start () {
+		enemyList = new Transform[MaxEnemies];
 		Spawn ();
 	}
 
@@ -17,6 +19,7 @@ public class GameController : MonoBehaviour {
 		for (int i=0; i<MaxEnemies; i++) {
 			Transform enemy = (Transform) Instantiate(EnemyShipPrefab, Player.transform.position + randomPointOnSphere(50.0f), Quaternion.identity);
 			enemy.GetComponent<EnemyShipController>().Player = Player;
+			enemyList[i] = enemy;
 		}
 	}
 	
@@ -39,7 +42,7 @@ public class GameController : MonoBehaviour {
 
 	void hitScanHit(GameObject enemyObject)
 	{
-	
+		enemyObject.BroadcastMessage ("destroyEnemy");
 
 	}
 }

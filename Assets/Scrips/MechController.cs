@@ -18,7 +18,6 @@ public class MechController : MonoBehaviour {
 	//Raycasting Variables
 	public string fireButtonName = "Fire1";
 	private bool readyToFire = true;
-	public LayerMask layerMask = -1;
 
 
 
@@ -75,15 +74,15 @@ public class MechController : MonoBehaviour {
 		if (Input.GetButtonDown (fireButtonName) && readyToFire) 
 		{
 			RaycastHit hit;
-			if(Physics.Raycast (Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, layerMask))
+			Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 100.0f, Color.blue, 50.0f);
+			if(Physics.Raycast (ray, out hit))
 			{
 				if(hit.collider.gameObject.CompareTag("Enemy"))
 				{
 					SendMessageUpwards ("hitScanHit", hit.collider.gameObject);
 				}
 			}
-
-
 
 		}
 
