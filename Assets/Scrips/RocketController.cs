@@ -3,6 +3,9 @@ using System.Collections;
 
 public class RocketController : MonoBehaviour {
 	public float MoveSpeed = 25.0f;
+	public float lifeTime = 10.0f;
+
+	private float life = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -11,6 +14,10 @@ public class RocketController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		life += Time.deltaTime;
+		if (life >= lifeTime) 
+			Destroy (this.gameObject);
+
 		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
 
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");

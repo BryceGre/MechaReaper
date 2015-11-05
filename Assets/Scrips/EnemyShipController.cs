@@ -19,7 +19,7 @@ public class EnemyShipController : EnemyController {
 			//Destroy (this.gameObject);
 			gameObject.transform.position = Player.transform.position + GameController.randomPointOnSphere(50.0f);
 			health = 10;
-			BroadcastMessage("unlockTarget", this.gameObject.transform, SendMessageOptions.DontRequireReceiver);
+			instance++;
 		}
 
 		Vector3 toPlayer = Player.transform.position - gameObject.transform.position;
