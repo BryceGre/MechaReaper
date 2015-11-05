@@ -1,15 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyShipController : MonoBehaviour {
-	public Transform Player = null;
-	public float MoveSpeed = 20.0f;
-	public float RotateSpeed = 1.0f;
-	public int health = 10;
+public class EnemyShipController : EnemyController {
 	private bool pass = false;
-	
-	public GameObject explosion;
-
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +11,6 @@ public class EnemyShipController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		if (health <= 0) {
 			Instantiate (explosion, this.transform.position, this.transform.rotation);
 			Destroy (this.gameObject);
@@ -39,17 +31,6 @@ public class EnemyShipController : MonoBehaviour {
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);
 
 		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
-	}
-
-	void destroyEnemy(){
-		Instantiate (explosion, this.transform.position, this.transform.rotation);
-		Destroy (this.gameObject);
-	}
-
-	public void applyDamage(int damage)
-	{
-		health -= damage;
-
 	}
 
 }
