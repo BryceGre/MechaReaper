@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour {
 		GUI.shield.sizeDelta = new Vector2(GUI.getShieldWidth() * shield, GUI.shield.rect.height);
 	}
 
-	Vector3 randomPointOnSphere(float radius) {
+	public static Vector3 randomPointOnSphere(float radius) {
 		float u = Random.Range(0.0f, 2.0f);
 		float v = Random.Range(-1.0f, 1.0f);
 		float theta = Mathf.PI * u;

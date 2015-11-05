@@ -7,6 +7,7 @@ public class MechController : MonoBehaviour {
 	public float lookSpeed = 2.0f;
 	public int health = 100;
 	public int shield = 100;
+	public int regen = 2;
 	public float regenTime = 0.2f;
 	
 	public Transform RocketPrefab = null;
@@ -64,7 +65,8 @@ public class MechController : MonoBehaviour {
 		regenTimer += Time.deltaTime;
 		while (regenTimer >= regenTime) {
 			regenTimer -= regenTime;
-			shield++;
+			if (shield <= (maxShield-regen))
+				shield += regen;
 		}
 
 		float lookX = lookSpeed * Input.GetAxis ("Mouse X");
