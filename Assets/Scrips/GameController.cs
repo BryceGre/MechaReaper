@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class GameController : MonoBehaviour {
+	public static float Unit = 4.0f;
+
 	public int MaxEnemies = 25;
 	public Transform Player = null;
 	public Transform EnemyShipPrefab = null;

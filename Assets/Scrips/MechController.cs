@@ -6,6 +6,7 @@ public class MechController : MonoBehaviour {
 	public float moveSpeed = 0.5f;
 	public float lookSpeed = 2.0f;
 	
+	public Transform RocketPrefab = null;
 	public Transform MissilePrefab = null;
 	public Texture2D targetBoxImage = null;
 
@@ -27,10 +28,15 @@ public class MechController : MonoBehaviour {
 	private bool readyToFire = true;
 	public string MissileButtonName = "FireRight";
 	private bool readyToMissile = true;
+<<<<<<< HEAD
 	public GameObject muzzleFlash;
 	private int muzzleFlashTimer = -1;
 
 
+=======
+	public string RocketButtonName = "FireLeft";
+	private bool readyToRocket = true;
+>>>>>>> 4b80ba2ee3f2a8b7a4a9a795c4833a3482604b90
 
 	// Use this for initialization
 	void Start () {
@@ -106,6 +112,10 @@ public class MechController : MonoBehaviour {
 			muzzleFlashTimer = 5;
 		}
 
+		if (Input.GetButtonDown (RocketButtonName) && readyToRocket) {
+			Transform rocket = (Transform) Instantiate(RocketPrefab, gameObject.transform.position, Quaternion.Inverse(gameObject.transform.rotation));
+		}
+
 		targetEnemies.Clear ();
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 		Vector3 lookAt = Camera.main.transform.forward;
@@ -114,7 +124,7 @@ public class MechController : MonoBehaviour {
 			if (Vector3.Dot(lookAt, toEnemy) > 0.8) {
 				targetEnemies.Add(enemy);
 				if (Input.GetButtonDown (MissileButtonName) && readyToMissile) {
-					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, gameObject.transform.rotation);
+					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, Quaternion.Inverse(gameObject.transform.rotation));
 					missile.GetComponent<MissileController>().Target = enemy.transform;
 				}
 			}
@@ -123,14 +133,17 @@ public class MechController : MonoBehaviour {
 
 	void OnGUI() {
 		foreach (GameObject enemy in targetEnemies) {
+			if (enemy == null) continue;
 			Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
 			float distance = Vector3.Distance(enemy.transform.position, Camera.main.transform.position);
-			float width = targetBoxWidth / distance * 10;
-			float height = targetBoxHeight / distance * 10;
-			float boxX = screenPos.x - (width / 2);
-			float boxY = Screen.height - screenPos.y - (height / 2);
+			if (distance > 0) {
+				float width = targetBoxWidth / distance * 10;
+				float height = targetBoxHeight / distance * 10;
+				float boxX = screenPos.x - (width / 2);
+				float boxY = Screen.height - screenPos.y - (height / 2);
 
-			GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
+				GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
+			}
 		}
 	}
 }
