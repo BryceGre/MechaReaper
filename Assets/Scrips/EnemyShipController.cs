@@ -3,8 +3,8 @@ using System.Collections;
 
 public class EnemyShipController : EnemyController {
 	private bool pass = false;
-	public int damage = 1;
-	public float fireTime = 1.0f;
+	public int damage = 2;
+	public float fireTime = 0.5f;
 	private float fireTimer = 0.0f;
 
 	// Use this for initialization
@@ -16,7 +16,10 @@ public class EnemyShipController : EnemyController {
 	void Update () {
 		if (health <= 0) {
 			Instantiate (explosion, this.transform.position, this.transform.rotation);
-			Destroy (this.gameObject);
+			//Destroy (this.gameObject);
+			gameObject.transform.position = Player.transform.position + GameController.randomPointOnSphere(50.0f);
+			health = 10;
+			BroadcastMessage("unlockTarget", this.gameObject.transform, SendMessageOptions.DontRequireReceiver);
 		}
 
 		Vector3 toPlayer = Player.transform.position - gameObject.transform.position;
@@ -37,7 +40,8 @@ public class EnemyShipController : EnemyController {
 			fireTimer += Time.deltaTime;
 			while (fireTimer >= fireTime) {
 				fireTimer -= fireTime;
-				Player.GetComponent<MechController>().applyDamage(damage);
+				if (Random.Range(0, 2) == 0)
+					Player.GetComponent<MechController>().applyDamage(damage);
 			}
 		}
 

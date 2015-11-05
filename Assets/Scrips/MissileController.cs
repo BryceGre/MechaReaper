@@ -23,6 +23,12 @@ public class MissileController : MonoBehaviour {
 		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
 	}
 
+	void unlockTarget(Transform target) {
+		if (this.Target.Equals(target)) {
+			Destroy(this.gameObject);
+		}
+	}
+
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Enemy") {
 			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
