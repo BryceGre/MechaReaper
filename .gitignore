@@ -1,0 +1,12 @@
+Temp/
+ProjectSettings/
+Library/
+Assembly-CSharp-Editor-vs.csproj
+Assembly-CSharp-Editor.csproj
+Assembly-CSharp.csproj
+Assembly-CSharp-vs.csproj
+Assembly-UnityScript-vs.unityproj
+Assembly-UnityScript.unityproj
+MechaReaper-csharp.sln
+MechaReaper.sln
+MechaReaper.userprefs
