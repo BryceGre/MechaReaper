@@ -27,6 +27,8 @@ public class MechController : MonoBehaviour {
 	private bool readyToFire = true;
 	public string MissileButtonName = "FireRight";
 	private bool readyToMissile = true;
+	public GameObject muzzleFlash;
+	private int muzzleFlashTimer = -1;
 
 
 
@@ -93,7 +95,8 @@ public class MechController : MonoBehaviour {
 					SendMessageUpwards ("hitScanHit", hit.collider.gameObject);
 				}
 			}
-
+			muzzleFlash.gameObject.SetActive(true);
+			muzzleFlashTimer = 5;
 		}
 
 		targetEnemies.Clear ();
@@ -101,7 +104,7 @@ public class MechController : MonoBehaviour {
 		Vector3 lookAt = Camera.main.transform.forward;
 		foreach (GameObject enemy in enemies) {
 			Vector3 toEnemy = Vector3.Normalize(enemy.transform.position - Camera.main.transform.position);
-			if (Vector3.Dot(lookAt, toEnemy) > 0.9) {
+			if (Vector3.Dot(lookAt, toEnemy) > 0.8) {
 				targetEnemies.Add(enemy);
 				if (Input.GetButtonDown (MissileButtonName) && readyToMissile) {
 					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, gameObject.transform.rotation);
