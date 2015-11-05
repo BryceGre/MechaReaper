@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: d615a62d1d23b4b47bdf5ec83cd0ce00
-timeCreated: 1446589111
+timeCreated: 1446762387
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - Player: {instanceID: 0}
   - explosion: {fileID: 137844, guid: 9dbf7c42e40d146ed9e8abbad79ae0af, type: 2}
+  - soulPickUp: {fileID: 192300, guid: fd9dd871e8e7d4564a55e72d69e8c9f8, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
