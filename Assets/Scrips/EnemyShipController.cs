@@ -3,6 +3,9 @@ using System.Collections;
 
 public class EnemyShipController : EnemyController {
 	private bool pass = false;
+	public int damage = 1;
+	public float fireTime = 1.0f;
+	private float fireTimer = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +32,14 @@ public class EnemyShipController : EnemyController {
 			toPlayer = -toPlayer;
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);
+
+		if (pass == false && Vector3.Dot (gameObject.transform.forward, toPlayer) > 0.95f) {
+			fireTimer += Time.deltaTime;
+			while (fireTimer >= fireTime) {
+				fireTimer -= fireTime;
+				Player.GetComponent<MechController>().applyDamage(damage);
+			}
+		}
 
 		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
 	}

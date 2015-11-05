@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 	public static float Unit = 4.0f;
+	public GUIController GUI = null;
 
 	public int MaxEnemies = 25;
 	public Transform Player = null;
@@ -32,7 +33,11 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		MechController mech = Player.GetComponent<MechController> ();
+		float health = (float)mech.health / (float)mech.getMaxHealth();
+		float shield = (float)mech.shield / (float)mech.getMaxShield();
+		GUI.health.sizeDelta = new Vector2(GUI.getHealthWidth() * health, GUI.health.rect.height);
+		GUI.shield.sizeDelta = new Vector2(GUI.getShieldWidth() * shield, GUI.shield.rect.height);
 	}
 
 	Vector3 randomPointOnSphere(float radius) {

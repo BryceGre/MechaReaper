@@ -5,10 +5,18 @@ using System.Collections.Generic;
 public class MechController : MonoBehaviour {
 	public float moveSpeed = 0.5f;
 	public float lookSpeed = 2.0f;
+	public int health = 100;
+	public int shield = 100;
+	public float regenTime = 0.2f;
 	
 	public Transform RocketPrefab = null;
 	public Transform MissilePrefab = null;
 	public Texture2D targetBoxImage = null;
+
+	private float regenTimer = 0.0f;
+
+	private int maxHealth;
+	private int maxShield;
 
 	private CharacterController controller;
 	private GameObject boostLeft;
@@ -40,10 +48,19 @@ public class MechController : MonoBehaviour {
 		boostBottom =	gameObject.transform.Find ("Body").Find ("Boost_Bottom").gameObject;
 		Cursor.visible = false;
 		targetEnemies = new List<GameObject> ();
+
+		maxHealth = health;
+		maxShield = shield;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		regenTimer += Time.deltaTime;
+		while (regenTimer >= regenTime) {
+			regenTimer -= regenTime;
+			shield++;
+		}
+
 		float lookX = lookSpeed * Input.GetAxis ("Mouse X");
 		float lookY = lookSpeed * Input.GetAxis ("Mouse Y");
 		
@@ -98,7 +115,7 @@ public class MechController : MonoBehaviour {
 		}
 
 		if (Input.GetButtonDown (RocketButtonName) && readyToRocket) {
-			Transform rocket = (Transform) Instantiate(RocketPrefab, gameObject.transform.position, Quaternion.Inverse(gameObject.transform.rotation));
+			Transform rocket = (Transform) Instantiate(RocketPrefab, gameObject.transform.position, Camera.main.transform.rotation);
 		}
 
 		targetEnemies.Clear ();
@@ -109,7 +126,7 @@ public class MechController : MonoBehaviour {
 			if (Vector3.Dot(lookAt, toEnemy) > 0.9) {
 				targetEnemies.Add(enemy);
 				if (Input.GetButtonDown (MissileButtonName) && readyToMissile) {
-					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, Quaternion.Inverse(gameObject.transform.rotation));
+					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, Camera.main.transform.rotation);
 					missile.GetComponent<MissileController>().Target = enemy.transform;
 				}
 			}
@@ -130,5 +147,21 @@ public class MechController : MonoBehaviour {
 				GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
 			}
 		}
+	}
+
+	public void applyDamage(int damage) {
+		shield -= damage;
+		if (shield < 0) {
+			health += shield;
+			shield = 0;
+		}
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public int getMaxShield() {
+		return maxShield;
 	}
 }
