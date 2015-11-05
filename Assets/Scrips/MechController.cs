@@ -28,15 +28,14 @@ public class MechController : MonoBehaviour {
 	private bool readyToFire = true;
 	public string MissileButtonName = "FireRight";
 	private bool readyToMissile = true;
-<<<<<<< HEAD
 	public GameObject muzzleFlash;
 	private int muzzleFlashTimer = -1;
 
 
-=======
+
 	public string RocketButtonName = "FireLeft";
 	private bool readyToRocket = true;
->>>>>>> 4b80ba2ee3f2a8b7a4a9a795c4833a3482604b90
+
 
 	// Use this for initialization
 	void Start () {

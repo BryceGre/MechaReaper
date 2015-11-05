@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: d4672daa9db8c434198f00d1f6e157fe
-timeCreated: 1446145381
+timeCreated: 1446758035
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - RocketPrefab: {instanceID: 0}
+  - MissilePrefab: {instanceID: 0}
+  - targetBoxImage: {instanceID: 0}
+  - muzzleFlash: {fileID: 193228, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
