@@ -81,7 +81,14 @@ public class MechController : MonoBehaviour {
 			boostTop.SetActive (false);
 			boostBottom.SetActive (false);
 		}
+		if (muzzleFlashTimer > 0) {
+			muzzleFlashTimer--;
+			if(muzzleFlashTimer == 0){
+				muzzleFlash.gameObject.SetActive (false);
+				muzzleFlashTimer = -1;
+			}
 
+		}
 
 		if (Input.GetButtonDown (fireButtonName) && readyToFire) 
 		{
