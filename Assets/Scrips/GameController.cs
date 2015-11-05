@@ -16,10 +16,12 @@ public class GameController : MonoBehaviour {
 
 
 	private bool inProgress = true;
+	private int totalSoulScore;
 	// Use this for initialization
 	void Start () {
 		enemyList = new Transform[MaxEnemies];
 		Spawn ();
+		totalSoulScore = 0;
 	}
 
 	void Spawn() {
@@ -51,5 +53,10 @@ public class GameController : MonoBehaviour {
 	{
 		//enemyObject.GetComponent<EnemyShipController> ().applyDamage (autocannonDamage);
 		enemyObject.SendMessage ("applyDamage", autocannonDamage);
+	}
+
+	void incrementSoulScore()
+	{
+		totalSoulScore++;
 	}
 }

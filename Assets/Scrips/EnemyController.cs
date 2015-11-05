@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour {
 	public int health = 10;
 	
 	public GameObject explosion;
+	public GameObject soulPickUp;
 	
 	public void applyDamage(int damage) {
 		health -= damage;
@@ -17,5 +18,6 @@ public class EnemyController : MonoBehaviour {
 	void destroyEnemy(){
 		Instantiate (explosion, this.transform.position, this.transform.rotation);
 		Destroy (this.gameObject);
+		Instantiate (soulPickUp, this.transform.position, this.transform.rotation);
 	}
 }

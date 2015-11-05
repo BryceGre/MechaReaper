@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MechController : MonoBehaviour {
+
 	public float moveSpeed = 0.5f;
 	public float lookSpeed = 2.0f;
 	
@@ -144,5 +145,5 @@ public class MechController : MonoBehaviour {
 				GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
 			}
 		}
-	}
+	}	
 }
