@@ -6,9 +6,12 @@ public class EnemyShipController : EnemyController {
 	public int damage = 1;
 	public float fireTime = 1.0f;
 	private float fireTimer = 0.0f;
+	private int muzzleFlashTimer = -1;
+	public GameObject muzzleFlash;
 
 	// Use this for initialization
 	void Start () {
+
 
 	}
 	
@@ -33,11 +36,21 @@ public class EnemyShipController : EnemyController {
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);
 
+		if (muzzleFlashTimer > 0) {
+			muzzleFlashTimer --;
+			if(muzzleFlashTimer == 0)
+			{
+				muzzleFlash.SetActive(false);
+			}
+		}
+
 		if (pass == false && Vector3.Dot (gameObject.transform.forward, toPlayer) > 0.95f) {
 			fireTimer += Time.deltaTime;
 			while (fireTimer >= fireTime) {
 				fireTimer -= fireTime;
 				Player.GetComponent<MechController>().applyDamage(damage);
+				muzzleFlash.SetActive(true);
+				muzzleFlashTimer = 5;
 			}
 		}
 
