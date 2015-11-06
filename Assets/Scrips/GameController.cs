@@ -55,4 +55,8 @@ public class GameController : MonoBehaviour {
 	{
 		totalSoulScore++;
 	}
+
+	public GameObject getPlayer() {
+		return Player.gameObject;
+	}
 }

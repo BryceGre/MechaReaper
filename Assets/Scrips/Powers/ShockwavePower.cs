@@ -6,6 +6,9 @@ public class ShockwavePower : Power {
 	public float Duration = 5.0f;
 	private float durationCounter = 0.0f;
 
+	public Transform PowerFX;
+	private Transform fxInstance = null;
+
 	public override void Start() {
 		base.Start ();
 	}
@@ -21,10 +24,15 @@ public class ShockwavePower : Power {
 					enemy.GetComponent<EnemyController>().resetSpeed();
 				}
 				durationCounter = 0.0f;
+				if (fxInstance != null)
+					Destroy(fxInstance.gameObject);
 			} else {
 				foreach (GameObject enemy in enemies) {
 					//slow enemy speed to 0 over 5 seconds
 					enemy.GetComponent<EnemyController>().MoveSpeed = durationCounter;
+				}
+				if (fxInstance != null) {
+					fxInstance.gameObject.transform.localScale *= 1.25f;
 				}
 			}
 		}
@@ -42,6 +50,11 @@ public class ShockwavePower : Power {
 			}
 		}
 
+		if (fxInstance != null)
+			Destroy (fxInstance.gameObject);
+		fxInstance = (Transform)Instantiate(PowerFX, this.gameObject.transform.position, Quaternion.identity);
+
 		durationCounter = Duration;
+		startCooldown ();
 	}
 }

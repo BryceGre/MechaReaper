@@ -20,4 +20,8 @@ public abstract class Power : MonoBehaviour {
 	public bool isOnCooldown() {
 		return (cooldownCount > 0.0f);
 	}
+
+	protected void startCooldown() {
+		cooldownCount = Cooldown;
+	}
 }
