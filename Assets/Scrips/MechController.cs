@@ -40,6 +40,7 @@ public class MechController : MonoBehaviour {
 	private float missileCooldown = 0.0f;
 	public string RocketButtonName = "FireLeft";
 	private float rocketCooldown = 0.0f;
+	public string PowerButtonName = "Fire3";
 
 	public GameObject muzzleFlash;
 	public GameObject bulletFlash;
@@ -179,6 +180,10 @@ public class MechController : MonoBehaviour {
 					}
 				}
 			}
+		}
+
+		if (Input.GetButtonDown (PowerButtonName)) {
+			this.gameObject.GetComponent<ShockwavePower>().usePower();
 		}
 	}
 
