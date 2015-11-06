@@ -49,7 +49,18 @@ public class GameController : MonoBehaviour {
 		return new Vector3(x, y, z);
 	}
 
+<<<<<<< HEAD
 	void incrementSoulScore()
+=======
+
+	void hitScanHit(GameObject enemyObject)
+	{
+		//enemyObject.GetComponent<EnemyShipController> ().applyDamage (autocannonDamage);
+		enemyObject.SendMessage ("applyDamage", autocannonDamage);
+	}
+
+	public void incrementSoulScore()
+>>>>>>> bb7b222ea453e826d76d711dbbe6c18ae5667189
 	{
 		totalSoulScore++;
 	}

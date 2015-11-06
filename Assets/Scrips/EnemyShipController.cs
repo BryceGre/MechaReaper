@@ -18,11 +18,7 @@ public class EnemyShipController : EnemyController {
 	// Update is called once per frame
 	void Update () {
 		if (health <= 0) {
-			Instantiate (explosion, this.transform.position, this.transform.rotation);
-			//Destroy (this.gameObject);
-			gameObject.transform.position = Player.transform.position + GameController.randomPointOnSphere(50.0f);
-			health = 10;
-			instance++;
+			this.destroyEnemy();
 		}
 
 		Vector3 toPlayer = Player.transform.position - gameObject.transform.position;

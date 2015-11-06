@@ -4,7 +4,7 @@ using System.Collections;
 public class SoulController : MonoBehaviour {
 
 	public float speed;
-	private GameObject gameController;
+	public GameObject gameController;
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +20,7 @@ public class SoulController : MonoBehaviour {
 	{
 		if (other.gameObject.CompareTag ("Player")) {
 
-			gameController.SendMessage ("incrementSoulScore");
+			gameController.GetComponent<GameController>().incrementSoulScore();
 			Destroy (this.gameObject);
 
 		}

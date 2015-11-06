@@ -16,10 +16,13 @@ public class EnemyController : MonoBehaviour {
 		health -= damage;
 	}
 
-	void destroyEnemy(){
+	public void destroyEnemy(){
 		Instantiate (explosion, this.transform.position, this.transform.rotation);
-		Destroy (this.gameObject);
 		Instantiate (soulPickUp, this.transform.position, this.transform.rotation);
+		//Destroy (this.gameObject);
+		gameObject.transform.position = Player.transform.position + GameController.randomPointOnSphere(50.0f);
+		health = 10;
+		instance++;
 	}
 
 	public int getInstance() {
