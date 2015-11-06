@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GUIController : MonoBehaviour {
 	public RectTransform health;
 	public RectTransform shield;
+	public Text souls;
 	private float healthWidth;
 	private float shieldWidth;
 	
