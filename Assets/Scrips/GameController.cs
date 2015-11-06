@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour {
 		enemyObject.SendMessage ("applyDamage", autocannonDamage);
 	}
 
-	void incrementSoulScore()
+	public void incrementSoulScore()
 	{
 		totalSoulScore++;
 	}

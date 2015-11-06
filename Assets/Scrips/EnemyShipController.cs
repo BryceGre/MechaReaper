@@ -18,11 +18,7 @@ public class EnemyShipController : EnemyController {
 	// Update is called once per frame
 	void Update () {
 		if (health <= 0) {
-			Instantiate (explosion, this.transform.position, this.transform.rotation);
-			//Destroy (this.gameObject);
-			gameObject.transform.position = Player.transform.position + GameController.randomPointOnSphere(50.0f);
-			health = 10;
-			instance++;
+			this.destroyEnemy();
 		}
 
 		Vector3 toPlayer = Player.transform.position - gameObject.transform.position;
@@ -51,14 +47,13 @@ public class EnemyShipController : EnemyController {
 			fireTimer += Time.deltaTime;
 			while (fireTimer >= fireTime) {
 				fireTimer -= fireTime;
-<<<<<<< HEAD
-				Player.GetComponent<MechController>().applyDamage(damage);
-				muzzleFlash.SetActive(true);
-				muzzleFlashTimer = 5;
-=======
 				if (Random.Range(0, 2) == 0)
+				{
 					Player.GetComponent<MechController>().applyDamage(damage);
->>>>>>> 39a9963218f67ecb0b4cfdb552a1b3e484a77fbb
+					muzzleFlash.SetActive(true);
+					muzzleFlashTimer = 5;
+				}
+
 			}
 		}
 
