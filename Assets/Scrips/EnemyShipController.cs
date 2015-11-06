@@ -51,14 +51,10 @@ public class EnemyShipController : EnemyController {
 			fireTimer += Time.deltaTime;
 			while (fireTimer >= fireTime) {
 				fireTimer -= fireTime;
-<<<<<<< HEAD
-				Player.GetComponent<MechController>().applyDamage(damage);
 				muzzleFlash.SetActive(true);
 				muzzleFlashTimer = 5;
-=======
 				if (Random.Range(0, 2) == 0)
 					Player.GetComponent<MechController>().applyDamage(damage);
->>>>>>> 39a9963218f67ecb0b4cfdb552a1b3e484a77fbb
 			}
 		}
 

@@ -9,7 +9,8 @@ public class MechController : MonoBehaviour {
 	public int shield = 100;
 	public int regen = 2;
 	public float regenTime = 0.2f;
-	
+	public float fireTime = 0.2f;
+
 	public Transform RocketPrefab = null;
 	public Transform MissilePrefab = null;
 	public Texture2D targetBoxImage = null;
@@ -34,17 +35,23 @@ public class MechController : MonoBehaviour {
 
 	//Raycasting Variables
 	public string fireButtonName = "Fire1";
-	private bool readyToFire = true;
+	private float fireCooldown = 0.0f;
 	public string MissileButtonName = "FireRight";
-	private bool readyToMissile = true;
+	private float missileCooldown = 0.0f;
+	public string RocketButtonName = "FireLeft";
+	private float rocketCooldown = 0.0f;
+
 	public GameObject muzzleFlash;
 	private int muzzleFlashTimer = -1;
-
-
-
-	public string RocketButtonName = "FireLeft";
-	private bool readyToRocket = true;
-
+	
+	private int railgunDamage = 12;
+	private int autocannonDamage = 6;
+	private int machinegunDamage = 3;
+	private float railgunCooldown = 0.5f;
+	private float autocannonCooldown = 0.25f;
+	private float machinegunCooldown = 0.125f;
+	private float heavyRocketCooldown = 1.0f;
+	private float heavyMissileCooldown = 1.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -113,37 +120,56 @@ public class MechController : MonoBehaviour {
 			}
 
 		}
-
-		if (Input.GetButtonDown (fireButtonName) && readyToFire) 
-		{
-			RaycastHit hit;
-			Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 100.0f, Color.blue, 50.0f);
-			if(Physics.Raycast (ray, out hit))
-			{
-				if(hit.collider.gameObject.CompareTag("Enemy"))
-				{
-					SendMessageUpwards ("hitScanHit", hit.collider.gameObject);
+		
+		fireCooldown -= Time.deltaTime;
+		while (fireCooldown < 0.0f) {
+			if ((Input.GetButton (fireButtonName) || Input.GetAxis (fireButtonName) > 0)) {
+				RaycastHit hit;
+				Ray ray = new Ray (Camera.main.transform.position, Camera.main.transform.forward);
+				Debug.DrawRay (Camera.main.transform.position, Camera.main.transform.forward * 100.0f, Color.blue, 50.0f);
+				if (Physics.Raycast (ray, out hit)) {
+					GameObject enemy = hit.collider.gameObject;
+					if (enemy.CompareTag ("Enemy")) {
+						enemy.GetComponent<EnemyController> ().applyDamage (autocannonDamage);
+					}
 				}
+				muzzleFlash.gameObject.SetActive (true);
+				muzzleFlashTimer = 5;
+
+				fireCooldown += autocannonCooldown;
+			} else {
+				fireCooldown = 0.0f;
 			}
-			muzzleFlash.gameObject.SetActive(true);
-			muzzleFlashTimer = 5;
 		}
 
-		if (Input.GetButtonDown (RocketButtonName) && readyToRocket) {
-			Transform rocket = (Transform) Instantiate(RocketPrefab, gameObject.transform.position, Camera.main.transform.rotation);
+		rocketCooldown -= Time.deltaTime;
+		while (rocketCooldown < 0.0f) {
+			if (Input.GetButton (RocketButtonName)) {
+				Transform rocket = (Transform)Instantiate (RocketPrefab, gameObject.transform.position, Camera.main.transform.rotation);
+				rocketCooldown += heavyRocketCooldown;
+			} else {
+				rocketCooldown = 0.0f;
+			}
 		}
-
+		
+		missileCooldown -= Time.deltaTime;
 		targetEnemies.Clear ();
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
 		Vector3 lookAt = Camera.main.transform.forward;
+		float missileBackup = missileCooldown;
 		foreach (GameObject enemy in enemies) {
-			Vector3 toEnemy = Vector3.Normalize(enemy.transform.position - Camera.main.transform.position);
-			if (Vector3.Dot(lookAt, toEnemy) > 0.8) {
-				targetEnemies.Add(enemy);
-				if (Input.GetButtonDown (MissileButtonName) && readyToMissile) {
-					Transform missile = (Transform) Instantiate(MissilePrefab, gameObject.transform.position, Camera.main.transform.rotation);
-					missile.GetComponent<MissileController>().Target = enemy.transform;
+			Vector3 toEnemy = Vector3.Normalize (enemy.transform.position - Camera.main.transform.position);
+			if (Vector3.Dot (lookAt, toEnemy) > 0.8) {
+				targetEnemies.Add (enemy);
+				missileCooldown = missileBackup;
+				while (missileCooldown < 0.0f) {
+					if (Input.GetButton (MissileButtonName)) {
+						Transform missile = (Transform)Instantiate (MissilePrefab, gameObject.transform.position, Camera.main.transform.rotation);
+						missile.GetComponent<MissileController> ().Target = enemy.transform;
+						missileCooldown += heavyMissileCooldown;
+					} else {
+						missileCooldown = 0.0f;
+					}
 				}
 			}
 		}

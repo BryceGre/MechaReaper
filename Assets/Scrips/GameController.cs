@@ -11,10 +11,6 @@ public class GameController : MonoBehaviour {
 	public Transform EnemyMechPrefab = null;
 	private Transform[] enemyList = null;
 
-	private int railgunDamage = 12;
-	private int autocannonDamage = 6;
-	private int machinegunDamage = 3;
-
 
 	private bool inProgress = true;
 	private int totalSoulScore;
@@ -51,13 +47,6 @@ public class GameController : MonoBehaviour {
 		float y = (radius * Mathf.Sin(phi) * Mathf.Sin(theta));
 		float z = (radius * Mathf.Cos(phi));
 		return new Vector3(x, y, z);
-	}
-
-
-	void hitScanHit(GameObject enemyObject)
-	{
-		//enemyObject.GetComponent<EnemyShipController> ().applyDamage (autocannonDamage);
-		enemyObject.SendMessage ("applyDamage", autocannonDamage);
 	}
 
 	void incrementSoulScore()
