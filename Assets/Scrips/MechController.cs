@@ -42,7 +42,9 @@ public class MechController : MonoBehaviour {
 	private float rocketCooldown = 0.0f;
 
 	public GameObject muzzleFlash;
+	public GameObject bulletFlash;
 	private int muzzleFlashTimer = -1;
+	private int bulletFlashTimer = -1;
 	
 	private int railgunDamage = 12;
 	private int autocannonDamage = 6;
@@ -114,8 +116,13 @@ public class MechController : MonoBehaviour {
 		}
 		if (muzzleFlashTimer > 0) {
 			muzzleFlashTimer--;
+			if(muzzleFlashTimer == 3)
+			{
+				bulletFlash.gameObject.SetActive(true);
+			}
 			if(muzzleFlashTimer == 0){
 				muzzleFlash.gameObject.SetActive (false);
+				bulletFlash.gameObject.SetActive (false);
 				muzzleFlashTimer = -1;
 			}
 
