@@ -10,6 +10,10 @@ public class GameController : MonoBehaviour {
 	public Transform EnemyShipPrefab = null;
 	public Transform EnemyMechPrefab = null;
 	private Transform[] enemyList = null;
+	public Transform asteroid1Prefab = null;
+	public Transform asteroid2Prefab = null;
+	public Transform asteroid3Prefab = null;
+	public float asteroidRange;
 
 
 	private bool inProgress = true;
@@ -19,6 +23,7 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		enemyList = new Transform[MaxEnemies];
 		Spawn ();
+		createAsteroidField ();
 		totalSoulScore = 0;
 	}
 
@@ -28,6 +33,43 @@ public class GameController : MonoBehaviour {
 			enemy.GetComponent<EnemyShipController>().Player = Player;
 			enemyList[i] = enemy;
 		}
+	}
+
+	void createAsteroidField (){
+		for (int i = 0; i<500; i++) {
+			Transform asteroid1 = (Transform)Instantiate (asteroid1Prefab, Player.transform.position + (Random.insideUnitSphere * asteroidRange), Random.rotation);
+			float magnitudeX = Random.Range (2, 25);
+			float magnitudeY = Random.Range (2, 25);
+			float magnitudeZ = Random.Range (2, 25);
+			asteroid1.GetComponent<AsteroidController>().player = Player;
+			asteroid1.GetComponent<AsteroidController>().range = asteroidRange;
+			asteroid1.transform.localScale = new Vector3(magnitudeX, magnitudeY, magnitudeZ);
+
+
+		}
+		for (int i = 0; i<500; i++) {
+			Transform asteroid2 = (Transform)Instantiate (asteroid2Prefab, Player.transform.position + (Random.insideUnitSphere * asteroidRange), Random.rotation);
+			float magnitudeX = Random.Range (2, 25);
+			float magnitudeY = Random.Range (2, 25);
+			float magnitudeZ = Random.Range (2, 25);
+			asteroid2.GetComponent<AsteroidController>().player = Player;
+			asteroid2.GetComponent<AsteroidController>().range = asteroidRange;
+			asteroid2.transform.localScale = new Vector3(magnitudeX, magnitudeY, magnitudeZ);
+			
+		}
+		for (int i = 0; i<500; i++) {
+			Transform asteroid3 = (Transform)Instantiate (asteroid3Prefab, Player.transform.position + (Random.insideUnitSphere * asteroidRange), Random.rotation);
+			float magnitudeX = Random.Range (2, 25);
+			float magnitudeY = Random.Range (2, 25);
+			float magnitudeZ = Random.Range (2, 25);
+			asteroid3.GetComponent<AsteroidController>().player = Player;
+			asteroid3.GetComponent<AsteroidController>().range = asteroidRange;
+			asteroid3.transform.localScale = new Vector3(magnitudeX, magnitudeY, magnitudeZ);
+			
+		}
+
+
+
 	}
 	
 	// Update is called once per frame
