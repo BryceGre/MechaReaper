@@ -145,9 +145,17 @@ public class MechController : MonoBehaviour {
 				Ray ray = new Ray (Camera.main.transform.position, Camera.main.transform.forward);
 				Debug.DrawRay (Camera.main.transform.position, Camera.main.transform.forward * 100.0f, Color.blue, 50.0f);
 				if (Physics.Raycast (ray, out hit)) {
-					GameObject enemy = hit.collider.gameObject;
-					if (enemy.CompareTag ("Enemy")) {
-						enemy.GetComponent<EnemyController> ().applyDamage (autocannonDamage);
+					GameObject target = hit.collider.gameObject;
+					Vector3 toTarget = Vector3.Normalize(target.transform.position - gameObject.transform.position);
+					RaycastHit hit2;
+					Ray ray2 = new Ray (gameObject.transform.position + (toTarget*2), toTarget);
+					if (Physics.Raycast (ray2, out hit2)) {
+						GameObject hitObject = hit2.collider.gameObject;
+						if (hitObject.CompareTag ("Enemy")) {
+							hitObject.GetComponent<EnemyController> ().applyDamage (autocannonDamage);
+						} else if (hitObject.CompareTag("Debris")) {
+							//asteroid hit
+						}
 					}
 				}
 				muzzleFlash.gameObject.SetActive (true);
@@ -210,7 +218,7 @@ public class MechController : MonoBehaviour {
 
 
 		if (Input.GetButtonDown (PowerButtonName)) {
-			this.gameObject.GetComponent<ShockwavePower>().usePower();
+			this.gameObject.GetComponent<AscendPower>().usePower();
 		}
 	}
 
