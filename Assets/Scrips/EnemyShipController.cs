@@ -29,6 +29,8 @@ public class EnemyShipController : EnemyController {
 				Vector3 toObject = Vector3.Normalize(hitObject.transform.position - this.gameObject.transform.position);
 				Vector3 avoid = Vector3.RotateTowards (transform.forward, -toObject, RotateSpeed * Time.deltaTime, 0.0f);
 				gameObject.transform.rotation = Quaternion.LookRotation(avoid);
+				gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
+				return;
 			}
 		}
 			
