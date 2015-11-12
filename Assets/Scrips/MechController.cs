@@ -42,6 +42,13 @@ public class MechController : MonoBehaviour {
 	private float rocketCooldown = 0.0f;
 	public string PowerButtonName = "Fire3";
 
+	//Sword variables
+	public string swordButtonName = "Fire2";
+	private float swordCooldown = 0.0f;
+	public GameObject swordSlash;
+	private float slashCooldown = 3.0f;
+	private Animator animator = null;
+
 	public GameObject muzzleFlash;
 	public GameObject bulletFlash;
 	private int muzzleFlashTimer = -1;
@@ -68,6 +75,8 @@ public class MechController : MonoBehaviour {
 
 		maxHealth = health;
 		maxShield = shield;
+
+		animator = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -150,6 +159,23 @@ public class MechController : MonoBehaviour {
 			}
 		}
 
+		swordCooldown -= Time.deltaTime;
+		while (swordCooldown < 0.0f) {
+			if(Input.GetButton (swordButtonName)){
+				swordSlash.gameObject.SetActive (true);
+				animator.SetBool("isSwinging", true);
+				swordCooldown += slashCooldown;
+
+			}else{
+				swordSlash.gameObject.SetActive(false);
+				animator.SetBool ("isSwinging", false);
+				swordCooldown = 0.0f;
+			}
+
+
+		}
+
+
 		rocketCooldown -= Time.deltaTime;
 		while (rocketCooldown < 0.0f) {
 			if (Input.GetButton (RocketButtonName)) {
@@ -181,6 +207,7 @@ public class MechController : MonoBehaviour {
 				}
 			}
 		}
+
 
 		if (Input.GetButtonDown (PowerButtonName)) {
 			this.gameObject.GetComponent<ShockwavePower>().usePower();
