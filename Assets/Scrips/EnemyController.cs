@@ -28,7 +28,7 @@ public abstract class EnemyController : MonoBehaviour {
 		Instantiate (explosion, this.transform.position, this.transform.rotation);
 		Instantiate (soulPickUp, this.transform.position, this.transform.rotation);
 		//Destroy (this.gameObject);
-		gameObject.transform.position = Player.transform.position + GameController.randomPointOnSphere(50.0f);
+		gameObject.SetActive(false);
 		health = 10;
 		instance++;
 	}

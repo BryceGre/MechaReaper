@@ -5,8 +5,7 @@ using EZObjectPools;
 public class GameController : MonoBehaviour {
 	public static float Unit = 2.5f;
 	public GUIController GUI = null;
-
-	public int EnemiesPerWave = 200;
+	
 	public Transform Player = null;
 	public GameObject EnemyShip1Prefab = null;
 	public GameObject EnemyShip2Prefab = null;
@@ -44,8 +43,8 @@ public class GameController : MonoBehaviour {
 		createAsteroidField ();
 		totalSoulScore = 0;
 		spawnTimer = 0;
-
 		waves = new Wave[MaxWaves];
+
 		int[] enemies0 = new int[6];
 		enemies0[Enemy.Ship1] = 20;
 		enemies0[Enemy.Ship2] = 0;
@@ -53,7 +52,7 @@ public class GameController : MonoBehaviour {
 		enemies0[Enemy.Mech1] = 0;
 		enemies0[Enemy.Mech2] = 0;
 		enemies0[Enemy.Mech3] = 0;
-		waves [0] = new Wave (this, 0, enemies0);
+		waves [0] = new Wave (this, enemies0, 200);
 
 		int[] enemies1 = new int[6];
 		enemies1[Enemy.Ship1] = 10;
@@ -62,7 +61,7 @@ public class GameController : MonoBehaviour {
 		enemies1[Enemy.Mech1] = 10;
 		enemies1[Enemy.Mech2] = 0;
 		enemies1[Enemy.Mech3] = 0;
-		waves [1] = new Wave (this, 1, enemies1);
+		waves [1] = new Wave (this, enemies1, 200);
 	}
 
 	// Update is called once per frame
@@ -71,7 +70,7 @@ public class GameController : MonoBehaviour {
 		spawnTimer += Time.deltaTime;
 		while (spawnTimer >= SpawnInterval) {
 			spawnTimer -= SpawnInterval;
-			
+			waves[currentWave].spawnNext();
 		}
 		//update GUI
 		GUI.souls.text = totalSoulScore.ToString("D4");
@@ -137,20 +136,33 @@ public class GameController : MonoBehaviour {
 	}
 	
 	private class Wave {
+		private static int Num = 0;
 		private GameController Control;
-		private int Num;
 		private int[] Enemies;
+		private int EnemyCount;
 		private EZObjectPool[] Pools;
 
-		public Wave(GameController control, int num, int[] enemies) {
+		public Wave(GameController control, int[] enemies, int enemyCount) {
 			if (enemies.Length != 6) throw new UnityException("Must have 6 enemy types!");
 			Control = control;
 			Enemies = enemies;
-			Num = num;
+			EnemyCount = enemyCount;
+			Pools = new EZObjectPool[6];
+			createPools();
 		}
 
 		~Wave() {
 			destroyPools();
+		}
+
+		public bool isWaveOver() {
+			if (EnemyCount > 0)
+				return false;
+			for (int i=0; i<Pools.Length; i++) {
+				if (Pools[i].ActiveObjectCount() > 0)
+					return false;
+			}
+			return true;
 		}
 
 		private void createPools() {
@@ -160,6 +172,7 @@ public class GameController : MonoBehaviour {
 			Pools[Enemy.Mech1] = EZObjectPool.CreateObjectPool(Control.EnemyMech1Prefab, "MECH1_WAVE"+Num, Enemies[Enemy.Mech1], false, true, false);
 			Pools[Enemy.Mech2] = EZObjectPool.CreateObjectPool(Control.EnemyMech2Prefab, "MECH2_WAVE"+Num, Enemies[Enemy.Mech2], false, true, false);
 			Pools[Enemy.Mech3] = EZObjectPool.CreateObjectPool(Control.EnemyMech3Prefab, "MECH3_WAVE"+Num, Enemies[Enemy.Mech3], false, true, false);
+			Num++;
 		}
 
 		private void destroyPools() {
@@ -169,11 +182,16 @@ public class GameController : MonoBehaviour {
 		}
 		
 		public void spawnNext() {
+			if (EnemyCount <= 0)
+				return;
 			GameObject obj = null;
 			for (int i=0; i<Pools.Length; i++) {
-				if (Pools[i].TryGetNextObject(Control.Player.transform.position + randomPointOnSphere(50.0f), Quaternion.identity, out obj)) {
-					obj.GetComponent<EnemyShipController>().Player = Control.Player;
-					return;
+				if (Pools[i].PoolSize > 0)  {
+					if (Pools[i].TryGetNextObject(Control.Player.transform.position + randomPointOnSphere(50.0f), Quaternion.identity, out obj)) {
+						obj.GetComponent<EnemyShipController>().Player = Control.Player;
+						EnemyCount--;
+						return;
+					}
 				}
 			}
 		}
