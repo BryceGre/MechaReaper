@@ -20,12 +20,24 @@ public class EnemyShipController : EnemyController {
 			this.destroyEnemy();
 		}
 
-		Vector3 toPlayer = Player.transform.position - gameObject.transform.position;
+		//test for asteroids
+		RaycastHit hit;
+		Ray ray = new Ray (this.gameObject.transform.position, this.gameObject.transform.forward);
+		if (Physics.Raycast (ray, out hit, 10.0f)) {
+			GameObject hitObject = hit.collider.gameObject;
+			if (hitObject.CompareTag("Debris")) {
+				Vector3 toObject = Vector3.Normalize(hitObject.transform.position - this.gameObject.transform.position);
+				Vector3 avoid = Vector3.RotateTowards (transform.forward, -toObject, RotateSpeed * Time.deltaTime, 0.0f);
+				gameObject.transform.rotation = Quaternion.LookRotation(avoid);
+			}
+		}
+			
+		Vector3 toPlayer = Vector3.Normalize(Player.transform.position - gameObject.transform.position);
 		float distance = Vector3.Distance (gameObject.transform.position, Player.transform.position);
 		if (distance < 10.0f && pass == false) {
 			pass = true;
 			//jiggle up trajectory a bit
-			toPlayer = (Player.transform.position + Random.insideUnitSphere) - gameObject.transform.position;
+			toPlayer = Vector3.Normalize((Player.transform.position + Random.insideUnitSphere) - gameObject.transform.position);
 		} else if (distance > 30.0f && pass == true) {
 			pass = false;
 		}
@@ -46,10 +58,18 @@ public class EnemyShipController : EnemyController {
 			fireTimer += Time.deltaTime;
 			while (fireTimer >= fireTime) {
 				fireTimer -= fireTime;
-				muzzleFlash.SetActive(true);
-				muzzleFlashTimer = 5;
-				if (Random.Range(0, 2) == 0)
-					Player.GetComponent<MechController>().applyDamage(damage);
+				RaycastHit hit2;
+				Ray ray2 = new Ray (gameObject.transform.position, gameObject.transform.forward);
+				if (Physics.Raycast (ray2, out hit2)) {
+					GameObject player = hit2.collider.gameObject;
+					if (player.CompareTag ("Player")) {
+						muzzleFlash.SetActive(true);
+						muzzleFlashTimer = 5;
+						if (Random.Range(0, 2) == 0)
+							Player.GetComponent<MechController>().applyDamage(damage);
+					}
+				}
+
 			}
 		}
 
