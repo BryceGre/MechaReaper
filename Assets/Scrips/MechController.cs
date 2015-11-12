@@ -191,7 +191,7 @@ public class MechController : MonoBehaviour {
 		}
 
 		if (Input.GetButtonDown (PowerButtonName)) {
-			this.gameObject.GetComponent<ShockwavePower>().usePower();
+			this.gameObject.GetComponent<AscendPower>().usePower();
 		}
 	}
 
