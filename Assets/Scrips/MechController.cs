@@ -52,7 +52,7 @@ public class MechController : MonoBehaviour {
 	private string swordButtonName = "Fire2";
 	private float swordCooldown = 0.0f;
 	public GameObject swordSlash;
-	private float slashCooldown = 3.0f;
+	private float slashCooldown = 4.0f;
 	private Animator animator = null;
 
 	public GameObject muzzleFlash;
@@ -90,7 +90,7 @@ public class MechController : MonoBehaviour {
 		regenTimer += Time.deltaTime;
 		while (regenTimer >= regenTime) {
 			regenTimer -= regenTime;
-			if (shield <= (maxShield-regen))
+			if (shield <= (maxShield - regen))
 				shield += regen;
 		}
 
@@ -99,16 +99,16 @@ public class MechController : MonoBehaviour {
 		
 		transform.Rotate (lookY, lookX, 0);
 
-		Vector3 forward =	transform.TransformDirection(Vector3.forward);
-		Vector3 right =		transform.TransformDirection (Vector3.right);
+		Vector3 forward = transform.TransformDirection (Vector3.forward);
+		Vector3 right = transform.TransformDirection (Vector3.right);
 
 		float horiInput = -Input.GetAxisRaw ("Horizontal");
 		float vertInput = -Input.GetAxisRaw ("Vertical");
 		float speedMod = 1.0f;
 		if (Input.GetButton ("Jump"))
 			speedMod = 2.0f;
-		float horizontal =	(moveSpeed * speedMod) * horiInput;
-		float vertical =	(moveSpeed * speedMod) * vertInput;
+		float horizontal = (moveSpeed * speedMod) * horiInput;
+		float vertical = (moveSpeed * speedMod) * vertInput;
 
 		moveDir = (vertical * forward) + (horizontal * right);
 		controller.Move (moveDir);
@@ -132,11 +132,10 @@ public class MechController : MonoBehaviour {
 		}
 		if (muzzleFlashTimer > 0) {
 			muzzleFlashTimer--;
-			if(muzzleFlashTimer == 3)
-			{
-				bulletFlash.gameObject.SetActive(true);
+			if (muzzleFlashTimer == 3) {
+				bulletFlash.gameObject.SetActive (true);
 			}
-			if(muzzleFlashTimer == 0){
+			if (muzzleFlashTimer == 0) {
 				muzzleFlash.gameObject.SetActive (false);
 				bulletFlash.gameObject.SetActive (false);
 				muzzleFlashTimer = -1;
@@ -152,14 +151,14 @@ public class MechController : MonoBehaviour {
 				Debug.DrawRay (Camera.main.transform.position, Camera.main.transform.forward * 100.0f, Color.blue, 50.0f);
 				if (Physics.Raycast (ray, out hit)) {
 					GameObject target = hit.collider.gameObject;
-					Vector3 toTarget = Vector3.Normalize(target.transform.position - gameObject.transform.position);
+					Vector3 toTarget = Vector3.Normalize (target.transform.position - gameObject.transform.position);
 					RaycastHit hit2;
-					Ray ray2 = new Ray (gameObject.transform.position + (toTarget*2), toTarget);
+					Ray ray2 = new Ray (gameObject.transform.position + (toTarget * 2), toTarget);
 					if (Physics.Raycast (ray2, out hit2)) {
 						GameObject hitObject = hit2.collider.gameObject;
 						if (hitObject.CompareTag ("Enemy")) {
 							hitObject.GetComponent<EnemyController> ().applyDamage (autocannonDamage);
-						} else if (hitObject.CompareTag("Debris")) {
+						} else if (hitObject.CompareTag ("Debris")) {
 							//asteroid hit
 						}
 					}
@@ -172,23 +171,23 @@ public class MechController : MonoBehaviour {
 				fireCooldown = 0.0f;
 			}
 		}
-
-		swordCooldown -= Time.deltaTime;
-		while (swordCooldown < 0.0f) {
-			if(Input.GetButton (swordButtonName)){
-				swordSlash.gameObject.SetActive (true);
-				animator.SetBool("isSwinging", true);
-				swordCooldown += slashCooldown;
-
-			}else{
-				swordSlash.gameObject.SetActive(false);
-				animator.SetBool ("isSwinging", false);
-				swordCooldown = 0.0f;
-			}
-
+		if (swordCooldown < 2.5f && swordSlash.gameObject.activeSelf == true) {
+			swordSlash.gameObject.SetActive(false);
 
 		}
 
+		swordCooldown -= Time.deltaTime;
+		while (swordCooldown < 0.0f) {
+			if (Input.GetButton (swordButtonName)) {
+				swordSlash.gameObject.SetActive (true);
+				animator.SetTrigger ("isSwinging");
+				swordCooldown += slashCooldown;
+
+			} else {
+				swordCooldown = 0.0f;
+			}
+
+		}
 
 		rocketCooldown -= Time.deltaTime;
 		while (rocketCooldown < 0.0f) {
