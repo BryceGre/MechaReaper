@@ -8,6 +8,7 @@ public class EnemyMechController : EnemyController {
 	private int muzzleFlashTimer = -1;
 	public GameObject muzzleFlash;
 	private bool left = false;
+	private float leftTimer = 0.0f;
 	
 	// Use this for initialization
 	public override void Start () {
@@ -20,15 +21,22 @@ public class EnemyMechController : EnemyController {
 			this.destroyEnemy();
 		}
 
+		leftTimer += Time.deltaTime;
+		while (leftTimer > 1.0f) {
+			if (Random.Range (0, 2) == 0)
+				left = !left;
+			leftTimer -= 1.0f;
+		}
+
 		Vector3 moveDir = gameObject.transform.right;
 		if (left) 
 			moveDir = -moveDir;
 		Vector3 toPlayer = Vector3.Normalize(Player.transform.position - gameObject.transform.position);
 		float distance = Vector3.Distance (gameObject.transform.position, Player.transform.position);
 		if (distance < 28.0f) {
-			moveDir = Vector3.Normalize(moveDir - toPlayer);
+			moveDir = -toPlayer;
 		} else if (distance > 32.0f) {
-			moveDir = Vector3.Normalize(moveDir + toPlayer);
+			moveDir = toPlayer;
 		}
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);

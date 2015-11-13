@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour {
 	public float SpawnInterval;
 	private float spawnTimer;
 	public int MaxWaves;
-	private int currentWave = 0;
+	private int currentWave = 1;
 
 	private bool inProgress = true;
 	private int totalSoulScore;
@@ -141,6 +141,7 @@ public class GameController : MonoBehaviour {
 		private int[] Enemies;
 		private int EnemyCount;
 		private EZObjectPool[] Pools;
+		private int lastSpawn = 0;
 
 		public Wave(GameController control, int[] enemies, int enemyCount) {
 			if (enemies.Length != 6) throw new UnityException("Must have 6 enemy types!");
@@ -186,9 +187,11 @@ public class GameController : MonoBehaviour {
 				return;
 			GameObject obj = null;
 			for (int i=0; i<Pools.Length; i++) {
-				if (Pools[i].PoolSize > 0)  {
-					if (Pools[i].TryGetNextObject(Control.Player.transform.position + randomPointOnSphere(50.0f), Quaternion.identity, out obj)) {
-						obj.GetComponent<EnemyShipController>().Player = Control.Player;
+				lastSpawn++;
+				if (lastSpawn >= Pools.Length) lastSpawn -= Pools.Length;
+				if (Pools[lastSpawn].PoolSize > 0)  {
+					if (Pools[lastSpawn].TryGetNextObject(Control.Player.transform.position + randomPointOnSphere(50.0f), Quaternion.identity, out obj)) {
+						obj.GetComponent<EnemyController>().Player = Control.Player;
 						EnemyCount--;
 						return;
 					}
