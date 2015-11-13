@@ -34,16 +34,22 @@ public class MechController : MonoBehaviour {
 	private float targetBoxHeight = 256;
 
 	//Raycasting Variables
-	public string fireButtonName = "Fire1";
+	private string fireButtonName = "Fire1";
 	private float fireCooldown = 0.0f;
-	public string MissileButtonName = "FireRight";
+	private string MissileButtonName = "FireRight";
 	private float missileCooldown = 0.0f;
-	public string RocketButtonName = "FireLeft";
+	private string RocketButtonName = "FireLeft";
 	private float rocketCooldown = 0.0f;
-	public string PowerButtonName = "Fire3";
+	private string PowerButtonName = "Fire3";
+
+	private string Power1ButtonName = "Power1";
+	private string Power2ButtonName = "Power2";
+	private string Power3ButtonName = "Power3";
+	private string Power4ButtonName = "Power4";
+	private string Power5ButtonName = "Power5";
 
 	//Sword variables
-	public string swordButtonName = "Fire2";
+	private string swordButtonName = "Fire2";
 	private float swordCooldown = 0.0f;
 	public GameObject swordSlash;
 	private float slashCooldown = 3.0f;
@@ -220,6 +226,19 @@ public class MechController : MonoBehaviour {
 		if (Input.GetButtonDown (PowerButtonName)) {
 			this.gameObject.GetComponent<AscendPower>().usePower();
 		}
+
+		if (Input.GetButtonDown (Power1ButtonName)) {
+			this.gameObject.GetComponent<AscendPower>().usePower();
+		}
+		if (Input.GetButtonDown (Power2ButtonName)) {
+			this.gameObject.GetComponent<ShockwavePower>().usePower();
+		}
+		if (Input.GetButtonDown (Power3ButtonName)) {
+			//this.gameObject.GetComponent<ShockwavePower>().usePower();
+		}
+		if (Input.GetButtonDown (Power4ButtonName)) {
+			this.gameObject.GetComponent<LifestealPower>().usePower();
+		}
 	}
 
 	void OnGUI() {
@@ -244,6 +263,12 @@ public class MechController : MonoBehaviour {
 			health += shield;
 			shield = 0;
 		}
+	}
+
+	public void restoreHealth(int restore) {
+		health += restore;
+		if (health > maxHealth)
+			health = maxHealth;
 	}
 
 	public int getMaxHealth() {

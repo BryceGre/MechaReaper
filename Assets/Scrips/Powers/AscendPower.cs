@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AscendPower : Power {
 	public float Distance = 25.0f;
-	public float Duration = 2.0f;
+	public float Duration = 0.5f;
 	private float durationCounter = 0.0f;
 	
 	public override void Start() {
