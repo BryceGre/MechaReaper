@@ -65,12 +65,16 @@ public class EnemyShipController : EnemyController {
 				RaycastHit hit2;
 				Ray ray2 = new Ray (gameObject.transform.position, gameObject.transform.forward);
 				if (Physics.Raycast (ray2, out hit2)) {
-					GameObject player = hit2.collider.gameObject;
-					if (player.CompareTag ("Player")) {
+					GameObject hitObject = hit2.collider.gameObject;
+					if (hitObject.CompareTag ("Player")) {
 						muzzleFlash.SetActive(true);
 						muzzleFlashTimer = 5;
 						if (Random.Range(0, 2) == 0)
 							Player.GetComponent<MechController>().applyDamage(damage);
+					}
+					if(hitObject.CompareTag ("Debris")){
+						if (Random.Range(0, 2) == 0)
+							hitObject.GetComponent<AsteroidController>().applyDamage(damage);
 					}
 				}
 
