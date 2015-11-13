@@ -21,5 +21,9 @@ public class SwordController : MonoBehaviour {
 		{
 			other.gameObject.GetComponent<EnemyController>().applyDamage(swordDamage);
 		}
+		if (other.CompareTag ("Debris")) {
+			other.gameObject.GetComponent<AsteroidController>().applyDamage(swordDamage);
+
+		}
 	}
 }

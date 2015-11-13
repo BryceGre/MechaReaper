@@ -159,7 +159,7 @@ public class MechController : MonoBehaviour {
 						if (hitObject.CompareTag ("Enemy")) {
 							hitObject.GetComponent<EnemyController> ().applyDamage (autocannonDamage);
 						} else if (hitObject.CompareTag ("Debris")) {
-							//asteroid hit
+							hitObject.GetComponent<AsteroidController>().applyDamage(autocannonDamage);
 						}
 					}
 				}
