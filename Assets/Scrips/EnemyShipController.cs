@@ -47,6 +47,8 @@ public class EnemyShipController : EnemyController {
 			toPlayer = -toPlayer;
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);
+		
+		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
 
 		if (muzzleFlashTimer > 0) {
 			muzzleFlashTimer --;
@@ -74,8 +76,6 @@ public class EnemyShipController : EnemyController {
 
 			}
 		}
-
-		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.transform.forward * MoveSpeed;
 	}
 
 }
