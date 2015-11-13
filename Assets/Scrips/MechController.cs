@@ -46,7 +46,7 @@ public class MechController : MonoBehaviour {
 	public string swordButtonName = "Fire2";
 	private float swordCooldown = 0.0f;
 	public GameObject swordSlash;
-	private float slashCooldown = 3.0f;
+	private float slashCooldown = 2.0f;
 	private Animator animator = null;
 
 	public GameObject muzzleFlash;
