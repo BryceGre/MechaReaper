@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MechController : MonoBehaviour {
+	public const float TargetDot = 0.9f;
+
+	public RectTransform TargetCircle;
+	public Canvas GUICanvas;
+
 	public float moveSpeed = 0.5f;
 	public float lookSpeed = 2.0f;
 	public int health = 100;
@@ -83,6 +88,21 @@ public class MechController : MonoBehaviour {
 		maxShield = shield;
 
 		animator = gameObject.GetComponent<Animator>();
+
+		//calculate circle for GUI targeting
+		float angle = Mathf.Acos (TargetDot);
+		float radius = 10.0f * Mathf.Tan (angle);
+		Vector3 front = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10.0f));
+		Vector3 right = front + (Camera.main.transform.right * radius);
+		Vector3 top = front + (Camera.main.transform.up * radius);
+		Vector3 left = front - (Camera.main.transform.right * radius);
+		Vector3 bottom = front - (Camera.main.transform.up * radius);
+		Vector3 screenRight = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, right), TargetCircle, GUICanvas);
+		Vector3 screenTop = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, top), TargetCircle, GUICanvas);
+		Vector3 screenLeft = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, left), TargetCircle, GUICanvas);
+		Vector3 screenBottom = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, bottom), TargetCircle, GUICanvas);
+		
+		TargetCircle.sizeDelta = new Vector2 ((screenRight.x - screenLeft.x), (screenTop.y - screenBottom.y));
 	}
 	
 	// Update is called once per frame
@@ -206,7 +226,7 @@ public class MechController : MonoBehaviour {
 		float missileBackup = missileCooldown;
 		foreach (GameObject enemy in enemies) {
 			Vector3 toEnemy = Vector3.Normalize (enemy.transform.position - Camera.main.transform.position);
-			if (Vector3.Dot (lookAt, toEnemy) > 0.8) {
+			if (Vector3.Dot (lookAt, toEnemy) > TargetDot) {
 				targetEnemies.Add (enemy);
 				missileCooldown = missileBackup;
 				while (missileCooldown < 0.0f) {
