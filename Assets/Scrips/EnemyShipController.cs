@@ -40,7 +40,7 @@ public class EnemyShipController : EnemyController {
 			pass = true;
 			//jiggle up trajectory a bit
 			toPlayer = Vector3.Normalize((Player.transform.position + Random.insideUnitSphere) - gameObject.transform.position);
-		} else if (distance > 30.0f && pass == true) {
+		} else if (distance > 40.0f && pass == true) {
 			pass = false;
 		}
 		if (pass == true)

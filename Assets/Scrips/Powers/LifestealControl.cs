@@ -24,7 +24,6 @@ public class LifestealControl : MonoBehaviour {
 		if (other.CompareTag("Player")) {
 			other.GetComponent<MechController>().restoreHealth(HealAmount);
 			Destroy(gameObject);
-			Debug.Log("Heal");
 		}
 	}
 }

@@ -233,7 +233,7 @@ public class MechController : MonoBehaviour {
 			this.gameObject.GetComponent<ShockwavePower>().usePower();
 		}
 		if (Input.GetButtonDown (Power3ButtonName)) {
-			//this.gameObject.GetComponent<ShockwavePower>().usePower();
+			this.gameObject.GetComponent<IntangiblePower>().usePower();
 		}
 		if (Input.GetButtonDown (Power4ButtonName)) {
 			this.gameObject.GetComponent<LifestealPower>().usePower();
@@ -260,6 +260,9 @@ public class MechController : MonoBehaviour {
 		shield -= damage;
 		if (shield < 0) {
 			health += shield;
+			if (health < 0) {
+				health = 0;
+			}
 			shield = 0;
 		}
 	}
