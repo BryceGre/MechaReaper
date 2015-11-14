@@ -13,7 +13,6 @@ public class GUIController : MonoBehaviour {
 	void Start () {
 		healthWidth = health.rect.width;
 		shieldWidth = shield.rect.width;
-		Debug.Log(healthWidth);
 	}
 
 	public float getHealthWidth() { return healthWidth; }

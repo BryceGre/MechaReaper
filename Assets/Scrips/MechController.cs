@@ -7,6 +7,7 @@ public class MechController : MonoBehaviour {
 
 	public RectTransform TargetCircle;
 	public Canvas GUICanvas;
+	private float lastScreenWidth;
 
 	public float moveSpeed = 0.5f;
 	public float lookSpeed = 2.0f;
@@ -90,21 +91,7 @@ public class MechController : MonoBehaviour {
 		maxShield = shield;
 
 		animator = reaper.GetComponent<Animator>();
-
-		//calculate circle for GUI targeting
-		float angle = Mathf.Acos (TargetDot);
-		float radius = 10.0f * Mathf.Tan (angle);
-		Vector3 front = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10.0f));
-		Vector3 right = front + (Camera.main.transform.right * radius);
-		Vector3 top = front + (Camera.main.transform.up * radius);
-		Vector3 left = front - (Camera.main.transform.right * radius);
-		Vector3 bottom = front - (Camera.main.transform.up * radius);
-		Vector3 screenRight = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, right), TargetCircle, GUICanvas);
-		Vector3 screenTop = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, top), TargetCircle, GUICanvas);
-		Vector3 screenLeft = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, left), TargetCircle, GUICanvas);
-		Vector3 screenBottom = RectTransformUtility.PixelAdjustPoint(RectTransformUtility.WorldToScreenPoint(Camera.main, bottom), TargetCircle, GUICanvas);
-		
-		TargetCircle.sizeDelta = new Vector2 ((screenRight.x - screenLeft.x), (screenTop.y - screenBottom.y));
+		lastScreenWidth = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -279,6 +266,32 @@ public class MechController : MonoBehaviour {
 
 				GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
 			}
+		}
+
+		if (lastScreenWidth != Screen.width) {
+			lastScreenWidth = Screen.width;
+
+			//calculate circle for GUI targeting
+			float angle = Mathf.Acos (TargetDot);
+			float radius = 10.0f * Mathf.Tan (angle);
+			Vector3 front = Camera.main.ViewportToWorldPoint (new Vector3 (0.5f, 0.5f, 10.0f));
+			Vector3 right = front + (Camera.main.transform.right * radius);
+			Vector3 top = front + (Camera.main.transform.up * radius);
+			Vector3 left = front - (Camera.main.transform.right * radius);
+			Vector3 bottom = front - (Camera.main.transform.up * radius);
+			
+			RectTransform rect = GUICanvas.GetComponent<RectTransform> ();
+			
+			Vector2 viewRight = Camera.main.WorldToViewportPoint (right);
+			Vector2 viewTop = Camera.main.WorldToViewportPoint (top);
+			Vector2 viewLeft = Camera.main.WorldToViewportPoint (left);
+			Vector2 viewBottom = Camera.main.WorldToViewportPoint (bottom);
+			
+			float rightX = (viewRight.x * rect.sizeDelta.x) - (rect.sizeDelta.x * 0.5f);
+			float leftX = (viewLeft.x * rect.sizeDelta.x) - (rect.sizeDelta.x * 0.5f);
+			float topY = (viewTop.y * rect.sizeDelta.y) - (rect.sizeDelta.y * 0.5f);
+			float botY = (viewBottom.y * rect.sizeDelta.y) - (rect.sizeDelta.y * 0.5f);
+			TargetCircle.sizeDelta = new Vector2 (rightX - leftX, topY - botY);
 		}
 	}
 		
