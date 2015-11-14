@@ -54,6 +54,8 @@ public abstract class Power : MonoBehaviour {
 		if (this.durationCount > 0.0f || this.cooldownCount > 0.0f)
 			return false;
 		durationCount = Duration;
+		Icon.Find ("CDImage").GetComponent<Image> ().fillAmount = 1.0f;
+		Icon.Find ("CDText").GetComponent<Text> ().text = "";
 		return true;
 	}
 }
