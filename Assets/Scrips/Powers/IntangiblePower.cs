@@ -24,10 +24,10 @@ public class IntangiblePower : Power {
 
 				this.gameObject.layer = 8;
 
-				this.transform.Find ("Body").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBody;
-				this.transform.Find ("Head").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
+				this.transform.Find ("Reaper").Find ("Body").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBody;
+				this.transform.Find ("Reaper").Find ("Head").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
 				for (int i=0; i<4; i++)
-					this.transform.Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
+					this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
 			}
 		}
 	}
@@ -37,14 +37,14 @@ public class IntangiblePower : Power {
 
 		this.gameObject.layer = 2;
 
-		SkinnedMeshRenderer body = this.transform.Find ("Body").GetComponent<SkinnedMeshRenderer> ();
+		SkinnedMeshRenderer body = this.transform.Find ("Reaper").Find ("Body").GetComponent<SkinnedMeshRenderer> ();
 		OpaqueBody = body.material;
 		body.material = TransparentBody;
-		SkinnedMeshRenderer head = this.transform.Find ("Head").GetComponent<SkinnedMeshRenderer> ();
+		SkinnedMeshRenderer head = this.transform.Find ("Reaper").Find ("Head").GetComponent<SkinnedMeshRenderer> ();
 		OpaqueBlack = head.material;
 		head.material = TransparentBlack;
 		for (int i=0; i<4; i++) {
-			SkinnedMeshRenderer cloth = this.transform.Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ();
+			SkinnedMeshRenderer cloth = this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ();
 			cloth.material = TransparentBlack;
 		}
 

@@ -59,6 +59,7 @@ public class MechController : MonoBehaviour {
 	public GameObject swordSlash;
 	private float slashCooldown = 4.0f;
 	private Animator animator = null;
+	private Transform reaper;
 
 	public GameObject muzzleFlash;
 	public GameObject bulletFlash;
@@ -77,17 +78,18 @@ public class MechController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		controller =	gameObject.GetComponent<CharacterController>();
-		boostLeft =		gameObject.transform.Find ("Body").Find ("Boost_Left").gameObject;
-		boostRight =	gameObject.transform.Find ("Body").Find ("Boost_Right").gameObject;
-		boostTop =		gameObject.transform.Find ("Body").Find ("Boost_Top").gameObject;
-		boostBottom =	gameObject.transform.Find ("Body").Find ("Boost_Bottom").gameObject;
+		reaper =		gameObject.transform.Find ("Reaper");
+		boostLeft =		reaper.Find ("Body").Find ("Boost_Left").gameObject;
+		boostRight =	reaper.Find ("Body").Find ("Boost_Right").gameObject;
+		boostTop =		reaper.Find ("Body").Find ("Boost_Top").gameObject;
+		boostBottom =	reaper.Find ("Body").Find ("Boost_Bottom").gameObject;
 		Cursor.visible = false;
 		targetEnemies = new List<GameObject> ();
 
 		maxHealth = health;
 		maxShield = shield;
 
-		animator = gameObject.GetComponent<Animator>();
+		animator = reaper.GetComponent<Animator>();
 
 		//calculate circle for GUI targeting
 		float angle = Mathf.Acos (TargetDot);
@@ -133,6 +135,12 @@ public class MechController : MonoBehaviour {
 		moveDir = (vertical * forward) + (horizontal * right);
 		controller.Move (moveDir);
 
+		//Vector3 newUp = transform.up + (transform.forward * (vertInput * 0.25f)) + (transform.right * (horiInput * 0.25f));
+		//Vector3 newForward = transform.forward - (transform.up * (vertInput * 0.25f));
+		//reaper.rotation = Quaternion.LookRotation(Vector3.Lerp (reaper.forward, newForward, Time.deltaTime), Vector3.Lerp (reaper.up, newUp, Time.deltaTime));
+		Vector3 newUp = transform.up + (transform.right * (horiInput * 0.25f));
+		reaper.rotation = Quaternion.LookRotation(transform.forward, Vector3.Lerp (reaper.up, newUp, Time.deltaTime));
+
 		if (horiInput < 0)
 			boostLeft.SetActive (true);
 		else
@@ -143,12 +151,10 @@ public class MechController : MonoBehaviour {
 		else 
 			boostRight.SetActive (false);
 
-		if (vertInput < 0) {
-			boostTop.SetActive (true);
-			boostBottom.SetActive (true);
+		if (vertInput != 0) {
+			//boostBottom.SetActive (true);
 		} else {
-			boostTop.SetActive (false);
-			boostBottom.SetActive (false);
+			//boostBottom.SetActive (false);
 		}
 		if (muzzleFlashTimer > 0) {
 			muzzleFlashTimer--;
@@ -275,7 +281,7 @@ public class MechController : MonoBehaviour {
 			}
 		}
 	}
-
+		
 	public void applyDamage(int damage) {
 		shield -= damage;
 		if (shield < 0) {
