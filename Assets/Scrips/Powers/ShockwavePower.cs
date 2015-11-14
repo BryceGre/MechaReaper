@@ -3,8 +3,6 @@ using System.Collections;
 
 public class ShockwavePower : Power {
 	public float Distance = 25.0f;
-	public float Duration = 5.0f;
-	private float durationCounter = 0.0f;
 
 	public Transform PowerFX;
 	private Transform fxInstance = null;
@@ -15,31 +13,21 @@ public class ShockwavePower : Power {
 
 	public override void Update() {
 		base.Update ();
-		if (durationCounter > 0.0f) {
-			durationCounter -= Time.deltaTime;
+		if (durationCount > 0.0f) {
 			GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
-			if (durationCounter <= 0.0f) {
-				foreach (GameObject enemy in enemies) {
-					//reset enemy speed to max
-					enemy.GetComponent<EnemyController>().resetSpeed();
-				}
-				durationCounter = 0.0f;
-				if (fxInstance != null)
-					Destroy(fxInstance.gameObject);
-			} else {
-				foreach (GameObject enemy in enemies) {
-					//slow enemy speed to 0 over 5 seconds
-					enemy.GetComponent<EnemyController>().MoveSpeed = durationCounter;
-				}
-				if (fxInstance != null) {
-					fxInstance.gameObject.transform.localScale *= 1.25f;
-				}
+			foreach (GameObject enemy in enemies) {
+				//slow enemy speed to 0 over 5 seconds
+				enemy.GetComponent<EnemyController>().MoveSpeed = durationCount;
+			}
+			if (fxInstance != null) {
+				fxInstance.gameObject.transform.localScale *= 1.25f;
 			}
 		}
 	}
 
-	public override void usePower() {
-		if (this.isOnCooldown()) return;
+	public override bool usePower() {
+		if (!base.usePower ())
+			return false;
 
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
 		foreach (GameObject enemy in enemies) {
@@ -49,12 +37,21 @@ public class ShockwavePower : Power {
 				control.RotateSpeed = 0.0f;
 			}
 		}
-
 		if (fxInstance != null)
 			Destroy (fxInstance.gameObject);
 		fxInstance = (Transform)Instantiate(PowerFX, this.gameObject.transform.position, Quaternion.identity);
 
-		durationCounter = Duration;
-		startCooldown ();
+		return true;
 	}
+
+	protected override void onDurationEnd() {
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		foreach (GameObject enemy in enemies) {
+			//reset enemy speed to max
+			enemy.GetComponent<EnemyController>().resetSpeed();
+		}
+		if (fxInstance != null)
+			Destroy(fxInstance.gameObject);
+	}
+
 }

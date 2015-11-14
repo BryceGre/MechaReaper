@@ -3,8 +3,6 @@ using System.Collections;
 
 public class AscendPower : Power {
 	public float Distance = 25.0f;
-	public float Duration = 0.5f;
-	private float durationCounter = 0.0f;
 	
 	public override void Start() {
 		base.Start ();
@@ -12,22 +10,21 @@ public class AscendPower : Power {
 	
 	public override void Update() {
 		base.Update ();
-		if (durationCounter > 0.0f) {
-			durationCounter -= Time.deltaTime;
+		if (this.durationCount > 0.0f) {
 			float factor = Time.deltaTime * (Distance / Duration);
-			if (durationCounter <= 0.0f) {
-				factor = (Time.deltaTime + durationCounter) * (Distance / Duration);
-				durationCounter = 0.0f;
-			}
 			Vector3 up = gameObject.transform.up * factor;
 			this.gameObject.transform.Translate(up, Space.World);
 		}
 	}
 	
-	public override void usePower() {
-		if (this.isOnCooldown()) return;
+	public override bool usePower() {
+		return base.usePower ();
+	}
 
-		durationCounter = Duration;
-		startCooldown ();
+	protected override void onDurationEnd() {
+		float factor = (Time.deltaTime + durationCount) * (Distance / Duration);
+		Vector3 up = gameObject.transform.up * factor;
+		this.gameObject.transform.Translate(up, Space.World);
+
 	}
 }

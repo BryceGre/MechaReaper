@@ -3,10 +3,8 @@ using System.Collections;
 
 public class LifestealPower : Power {
 	public float Distance = 10.0f;
-	public float Duration = 5.0f;
-	public int DrainAmount = 1;
+	public int DrainAmount = 2;
 	public float DrainInterval = 0.5f;
-	private float durationCounter = 0.0f;
 	private float intervalTimer = 0.0f;
 
 	public Transform PowerFX;
@@ -18,8 +16,7 @@ public class LifestealPower : Power {
 	
 	public override void Update() {
 		base.Update ();
-		if (durationCounter > 0.0f) {
-			durationCounter -= Time.deltaTime;
+		if (durationCount > 0.0f) {
 			intervalTimer += Time.deltaTime;
 			if (intervalTimer >= DrainInterval) {
 				GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
@@ -33,19 +30,12 @@ public class LifestealPower : Power {
 					}
 				}
 			}
-
-			if (durationCounter <= 0.0f) {
-				durationCounter = 0.0f;
-			}
 		} else {
 			intervalTimer = 0.0f;
 		}
 	}
 	
-	public override void usePower() {
-		if (this.isOnCooldown()) return;
-		
-		durationCounter = Duration;
-		startCooldown ();
+	public override bool usePower() {
+		return base.usePower ();
 	}
 }

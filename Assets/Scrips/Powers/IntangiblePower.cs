@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class IntangiblePower : Power {
-	public float Duration = 15.0f;
-	private float durationCounter = 0.0f;
 	public Material TransparentBody;
 	public Material TransparentBlack;
 
@@ -17,23 +15,11 @@ public class IntangiblePower : Power {
 	
 	public override void Update() {
 		base.Update ();
-		if (durationCounter > 0.0f) {
-			durationCounter -= Time.deltaTime;
-			if (durationCounter <= 0.0f) {
-				durationCounter = 0.0f;
-
-				this.gameObject.layer = 8;
-
-				this.transform.Find ("Reaper").Find ("Body").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBody;
-				this.transform.Find ("Reaper").Find ("Head").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
-				for (int i=0; i<4; i++)
-					this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
-			}
-		}
 	}
 	
-	public override void usePower() {
-		if (this.isOnCooldown()) return;
+	public override bool usePower() {
+		if (!base.usePower ())
+			return false;
 
 		this.gameObject.layer = 2;
 
@@ -47,8 +33,15 @@ public class IntangiblePower : Power {
 			SkinnedMeshRenderer cloth = this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ();
 			cloth.material = TransparentBlack;
 		}
+		return true;
+	}
 
-		durationCounter = Duration;
-		startCooldown ();
+	protected override void onDurationEnd() {
+		this.gameObject.layer = 8;
+		
+		this.transform.Find ("Reaper").Find ("Body").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBody;
+		this.transform.Find ("Reaper").Find ("Head").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
+		for (int i=0; i<4; i++)
+			this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
 	}
 }
