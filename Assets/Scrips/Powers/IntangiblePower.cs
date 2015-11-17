@@ -8,6 +8,8 @@ public class IntangiblePower : Power {
 	private Material OpaqueBody;
 	private Material OpaqueBlack;
 
+	public GameObject etherealState;
+
 	public override void Start() {
 		base.Start ();
 		Physics.IgnoreLayerCollision (0, 2, true);
@@ -33,6 +35,7 @@ public class IntangiblePower : Power {
 			SkinnedMeshRenderer cloth = this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ();
 			cloth.material = TransparentBlack;
 		}
+		etherealState.SetActive (true);
 		return true;
 	}
 
@@ -43,5 +46,6 @@ public class IntangiblePower : Power {
 		this.transform.Find ("Reaper").Find ("Head").GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
 		for (int i=0; i<4; i++)
 			this.transform.Find ("Reaper").Find ("Cloth" + i).GetComponent<SkinnedMeshRenderer> ().material = OpaqueBlack;
+		etherealState.SetActive (false);
 	}
 }
