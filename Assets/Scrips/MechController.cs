@@ -251,6 +251,9 @@ public class MechController : MonoBehaviour {
 		if (Input.GetButtonDown (Power4ButtonName)) {
 			this.gameObject.GetComponent<LifestealPower>().usePower();
 		}
+		if (Input.GetButtonDown (Power5ButtonName)) {
+			this.gameObject.GetComponent<CataclysmPower>().usePower();
+		}
 	}
 
 	void OnGUI() {
