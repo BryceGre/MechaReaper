@@ -9,7 +9,6 @@ TagManager:
   - Soul
   - Debris
   - Sword
-  - Smoke
   layers:
   - Default
   - TransparentFX
