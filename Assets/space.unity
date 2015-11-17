@@ -5731,7 +5731,6 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -11741,6 +11740,7 @@ MonoBehaviour:
   asteroid3Prefab: {fileID: 496220, guid: b3ba679e9ed2f4b64be720c5a48690cf, type: 2}
   asteroidRange: 1200
   SpawnInterval: 1
+  WaveInterval: 10
   MaxWaves: 2
 --- !u!4 &1785952704
 Transform:
