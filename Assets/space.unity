@@ -5758,7 +5758,6 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -11768,9 +11767,9 @@ MonoBehaviour:
   EnemyShip1Prefab: {fileID: 194992, guid: 52234922dd023499b95bfe71a6518af7, type: 2}
   EnemyShip2Prefab: {fileID: 141578, guid: 7253a49b5dc444e5ebe9eefc3cb647c4, type: 2}
   EnemyShip3Prefab: {fileID: 177322, guid: 8a02eda3a371e465da39bb64fdb6811e, type: 2}
-  EnemyMech1Prefab: {fileID: 180526, guid: c8abbb6b5cf0746f58f4c7c02448f730, type: 2}
-  EnemyMech2Prefab: {fileID: 180526, guid: c8abbb6b5cf0746f58f4c7c02448f730, type: 2}
-  EnemyMech3Prefab: {fileID: 180526, guid: c8abbb6b5cf0746f58f4c7c02448f730, type: 2}
+  EnemyMech1Prefab: {fileID: 174254, guid: abd0997dcb45f4474ab387c65b38d4e8, type: 2}
+  EnemyMech2Prefab: {fileID: 174306, guid: 51e5049584b4b48a1a983510940d2819, type: 2}
+  EnemyMech3Prefab: {fileID: 132890, guid: e1b334f589f374c52b18422c9a5dd447, type: 2}
   asteroid1Prefab: {fileID: 482658, guid: c5bd0c5365ffa4e7298e457a7f039197, type: 2}
   asteroid2Prefab: {fileID: 419930, guid: a6bc8bee1dd6a4e31aa0f285c5c2926f, type: 2}
   asteroid3Prefab: {fileID: 496220, guid: b3ba679e9ed2f4b64be720c5a48690cf, type: 2}

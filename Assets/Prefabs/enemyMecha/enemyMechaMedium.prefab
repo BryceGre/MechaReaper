@@ -584,11 +584,11 @@ MonoBehaviour:
   Player: {fileID: 0}
   MoveSpeed: 10
   RotateSpeed: 1
-  health: 10
+  health: 15
   Fear: 0
   explosion: {fileID: 137844, guid: 9dbf7c42e40d146ed9e8abbad79ae0af, type: 2}
   soulPickUp: {fileID: 192300, guid: fd9dd871e8e7d4564a55e72d69e8c9f8, type: 2}
-  damage: 2
+  damage: 4
   fireTime: .5
   muzzleFlash: {fileID: 126080}
 --- !u!137 &13770292
@@ -2820,7 +2820,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: damage
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: health
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174306}
