@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour {
 		enemies0[Enemy.Mech1] = 0;
 		enemies0[Enemy.Mech2] = 0;
 		enemies0[Enemy.Mech3] = 0;
-		waves [0] = new Wave (this, enemies0, 20);
+		waves [0] = new Wave (this, enemies0, 100);
 
 		int[] enemies1 = new int[6];
 		enemies1[Enemy.Ship1] = 10;
@@ -138,9 +138,8 @@ public class GameController : MonoBehaviour {
 					Cursor.visible = true;
 					WaveMenu.transform.Find ("Panel1").Find("WaveText").GetComponent<Text>().text = "Wave " + (currentWave+1) + " Complete";
 					int souls = Player.GetComponent<MechController>().getSoulScore() - waveSouls;
-					waveSouls = Player.GetComponent<MechController>().getSoulScore();
-					WaveMenu.transform.Find ("Panel2").Find("SoulsCount").GetComponent<Text>().text = souls.ToString("000") + "/" + waves[currentWave].getEnemies().ToString("000");
-					WaveMenu.transform.Find ("Panel2").Find("TimeCount").GetComponent<Text>().text = Mathf.Floor(waveTime / 60).ToString("00") + ":" + Mathf.RoundToInt(waveTime % 60).ToString("00");
+					WaveMenu.transform.Find ("Panel2").Find("SoulsCount").GetComponent<Text>().text = souls.ToString("D3") + "/100";
+					WaveMenu.transform.Find ("Panel2").Find("TimeCount").GetComponent<Text>().text = Mathf.FloorToInt(waveTime / 60).ToString("00") + ":" + Mathf.RoundToInt(waveTime % 60).ToString("00");
 				}
 			} else {
 				showWaveMenu = true;
@@ -175,7 +174,7 @@ public class GameController : MonoBehaviour {
 		currentWave++;
 		waves[currentWave].createPools();
 		waveTime = 0.0f;
-		waveSouls = 0;
+		waveSouls = Player.GetComponent<MechController>().getSoulScore();
 		spawnTimer = SpawnInterval;
 	}
 
@@ -285,10 +284,6 @@ public class GameController : MonoBehaviour {
 					}
 				}
 			}
-		}
-
-		public int getEnemies() {
-			return EnemyCount;
 		}
 	}
 }
