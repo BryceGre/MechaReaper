@@ -9,10 +9,12 @@ public class EnemyMechController : EnemyController {
 	public GameObject muzzleFlash;
 	private bool left = false;
 	private float leftTimer = 0.0f;
+	private AudioSource gunFireAudio;
 	
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
+		gunFireAudio = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -36,10 +38,6 @@ public class EnemyMechController : EnemyController {
 		if (distance < 28.0f) {
 			moveDir = -toPlayer;
 		} else if (distance > 32.0f) {
-			moveDir = toPlayer;
-		}
-		if (Fear == true) {
-			toPlayer = -toPlayer;
 			moveDir = toPlayer;
 		}
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
@@ -76,9 +74,9 @@ public class EnemyMechController : EnemyController {
 					GameObject hitObject = hit2.collider.gameObject;
 					if (hitObject.CompareTag ("Player")) {
 						muzzleFlash.SetActive(true);
+						gunFireAudio.Play();
 						muzzleFlashTimer = 5;
-						float range = Vector3.Distance(hitObject.transform.position, this.transform.position);
-						if (Random.Range(0.0f, range) < 10.0f)
+						if (Random.Range(0, 2) == 0)
 							Player.GetComponent<MechController>().applyDamage(damage);
 					}
 					if(hitObject.CompareTag ("Debris")){

@@ -8,10 +8,12 @@ public class EnemyShipController : EnemyController {
 	private float fireTimer = 0.0f;
 	private int muzzleFlashTimer = -1;
 	public GameObject muzzleFlash;
+	private AudioSource gunFireAudio;
 
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
+		gunFireAudio = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -67,6 +69,7 @@ public class EnemyShipController : EnemyController {
 				if (Physics.Raycast (ray2, out hit2)) {
 					GameObject hitObject = hit2.collider.gameObject;
 					if (hitObject.CompareTag ("Player")) {
+						gunFireAudio.Play();
 						muzzleFlash.SetActive(true);
 						muzzleFlashTimer = 5;
 						float range = Vector3.Distance(hitObject.transform.position, this.transform.position);
