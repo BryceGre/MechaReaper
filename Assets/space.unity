@@ -12260,7 +12260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordDamage: 100
-<<<<<<< HEAD
 --- !u!82 &1600155908
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12330,7 +12329,6 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-=======
 --- !u!1 &1644620515
 GameObject:
   m_ObjectHideFlags: 0
@@ -12397,7 +12395,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1644620515}
->>>>>>> ddd4484b1eac500fcb4d944394185caae628f297
 --- !u!4 &1677974075 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: 7904a50131fcc3445b53c20e1667510c, type: 3}
