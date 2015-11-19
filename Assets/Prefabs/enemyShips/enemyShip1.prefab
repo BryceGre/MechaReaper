@@ -269,6 +269,7 @@ MonoBehaviour:
   MoveSpeed: 40
   RotateSpeed: 2
   health: 10
+  Fear: 0
   explosion: {fileID: 137844, guid: 9dbf7c42e40d146ed9e8abbad79ae0af, type: 2}
   soulPickUp: {fileID: 192300, guid: fd9dd871e8e7d4564a55e72d69e8c9f8, type: 2}
   damage: 1

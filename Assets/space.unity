@@ -558,15 +558,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 483778, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: m_LocalPosition.x
-      value: .119999997
+      value: -.899999976
       objectReference: {fileID: 0}
     - target: {fileID: 483778, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -8.14000034
+      value: -8.10000038
       objectReference: {fileID: 0}
     - target: {fileID: 483778, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 2.83999991
+      value: 3.3900001
       objectReference: {fileID: 0}
     - target: {fileID: 483778, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: m_LocalRotation.x
@@ -594,7 +594,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: InitialModule.startSize.scalar
@@ -602,19 +602,31 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: InitialModule.maxNumParticles
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: ShapeModule.radius
-      value: .00999999978
+      value: .100000001
       objectReference: {fileID: 0}
     - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 1
+      value: .200000003
       objectReference: {fileID: 0}
     - target: {fileID: 193228, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 19978290, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 77d08210df254d845885518314593544, type: 2}
+    - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
+      propertyPath: InitialModule.startColor.maxColor.rgba
+      value: 4278225285
+      objectReference: {fileID: 0}
+    - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
+      propertyPath: ShapeModule.angle
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
@@ -5746,6 +5758,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -9207,6 +9220,14 @@ Prefab:
     - target: {fileID: 193228, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 19978290, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 19891480, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
+      propertyPath: InitialModule.startColor.maxColor.rgba
+      value: 4278255609
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf75f5e9ee1c14d60b80b428403d0c01, type: 2}
