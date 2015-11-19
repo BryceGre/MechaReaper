@@ -38,6 +38,10 @@ public class EnemyMechController : EnemyController {
 		} else if (distance > 32.0f) {
 			moveDir = toPlayer;
 		}
+		if (Fear == true) {
+			toPlayer = -toPlayer;
+			moveDir = toPlayer;
+		}
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);
 

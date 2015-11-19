@@ -8,6 +8,8 @@ public abstract class EnemyController : MonoBehaviour {
 	public float RotateSpeed = 1.0f;
 	public int health = 10;
 
+	public bool Fear = false;
+
 	protected float maxMoveSpeed;
 	protected float maxRotateSpeed;
 

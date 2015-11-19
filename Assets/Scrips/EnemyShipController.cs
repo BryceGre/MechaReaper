@@ -43,7 +43,7 @@ public class EnemyShipController : EnemyController {
 		} else if (distance > 40.0f && pass == true) {
 			pass = false;
 		}
-		if (pass == true)
+		if (pass == true || Fear == true)
 			toPlayer = -toPlayer;
 		Vector3 rotation = Vector3.RotateTowards (transform.forward, toPlayer, RotateSpeed * Time.deltaTime, 0.0f);
 		gameObject.transform.rotation = Quaternion.LookRotation(rotation);
@@ -58,7 +58,7 @@ public class EnemyShipController : EnemyController {
 			}
 		}
 
-		if (pass == false && Vector3.Dot (gameObject.transform.forward, toPlayer) > 0.95f) {
+		if (pass == false && Fear == false && Vector3.Dot (gameObject.transform.forward, toPlayer) > 0.95f) {
 			fireTimer += Time.deltaTime;
 			while (fireTimer >= fireTime) {
 				fireTimer -= fireTime;

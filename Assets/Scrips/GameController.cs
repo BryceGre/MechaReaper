@@ -19,9 +19,10 @@ public class GameController : MonoBehaviour {
 	public float asteroidRange;
 	
 	public float SpawnInterval;
+	public float WaveInterval;
 	private float spawnTimer;
 	public int MaxWaves;
-	private int currentWave = 1;
+	private int currentWave = 0;
 
 	private bool inProgress = true;
 	private int totalSoulScore;
@@ -42,7 +43,7 @@ public class GameController : MonoBehaviour {
 		//Spawn ();
 		createAsteroidField ();
 		totalSoulScore = 0;
-		spawnTimer = 0;
+		spawnTimer = SpawnInterval;
 		waves = new Wave[MaxWaves];
 
 		int[] enemies0 = new int[6];
@@ -52,7 +53,7 @@ public class GameController : MonoBehaviour {
 		enemies0[Enemy.Mech1] = 0;
 		enemies0[Enemy.Mech2] = 0;
 		enemies0[Enemy.Mech3] = 0;
-		waves [0] = new Wave (this, enemies0, 200);
+		waves [0] = new Wave (this, enemies0, 100);
 
 		int[] enemies1 = new int[6];
 		enemies1[Enemy.Ship1] = 10;
@@ -61,16 +62,80 @@ public class GameController : MonoBehaviour {
 		enemies1[Enemy.Mech1] = 10;
 		enemies1[Enemy.Mech2] = 0;
 		enemies1[Enemy.Mech3] = 0;
-		waves [1] = new Wave (this, enemies1, 200);
+		waves [1] = new Wave (this, enemies1, 100);
+		
+		int[] enemies2 = new int[6];
+		enemies2[Enemy.Ship1] = 8;
+		enemies2[Enemy.Ship2] = 2;
+		enemies2[Enemy.Ship3] = 0;
+		enemies2[Enemy.Mech1] = 8;
+		enemies2[Enemy.Mech2] = 2;
+		enemies2[Enemy.Mech3] = 0;
+		waves [2] = new Wave (this, enemies2, 100);
+		
+		int[] enemies3 = new int[6];
+		enemies3[Enemy.Ship1] = 5;
+		enemies3[Enemy.Ship2] = 5;
+		enemies3[Enemy.Ship3] = 0;
+		enemies3[Enemy.Mech1] = 5;
+		enemies3[Enemy.Mech2] = 5;
+		enemies3[Enemy.Mech3] = 0;
+		waves [3] = new Wave (this, enemies3, 100);
+		
+		int[] enemies4 = new int[6];
+		enemies4[Enemy.Ship1] = 2;
+		enemies4[Enemy.Ship2] = 8;
+		enemies4[Enemy.Ship3] = 0;
+		enemies4[Enemy.Mech1] = 2;
+		enemies4[Enemy.Mech2] = 8;
+		enemies4[Enemy.Mech3] = 0;
+		waves [4] = new Wave (this, enemies4, 100);
+		
+		int[] enemies5 = new int[6];
+		enemies5[Enemy.Ship1] = 2;
+		enemies5[Enemy.Ship2] = 5;
+		enemies5[Enemy.Ship3] = 3;
+		enemies5[Enemy.Mech1] = 2;
+		enemies5[Enemy.Mech2] = 5;
+		enemies5[Enemy.Mech3] = 3;
+		waves [5] = new Wave (this, enemies5, 100);
+		
+		int[] enemies6 = new int[6];
+		enemies6[Enemy.Ship1] = 0;
+		enemies6[Enemy.Ship2] = 5;
+		enemies6[Enemy.Ship3] = 5;
+		enemies6[Enemy.Mech1] = 0;
+		enemies6[Enemy.Mech2] = 5;
+		enemies6[Enemy.Mech3] = 5;
+		waves [6] = new Wave (this, enemies6, 100);
+		
+		int[] enemies7 = new int[7];
+		enemies7[Enemy.Ship1] = 0;
+		enemies7[Enemy.Ship2] = 2;
+		enemies7[Enemy.Ship3] = 8;
+		enemies7[Enemy.Mech1] = 0;
+		enemies7[Enemy.Mech2] = 2;
+		enemies7[Enemy.Mech3] = 8;
+		waves [7] = new Wave (this, enemies7, 100);
+
+		waves [currentWave].createPools ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		//spawn enemies
-		spawnTimer += Time.deltaTime;
-		while (spawnTimer >= SpawnInterval) {
-			spawnTimer -= SpawnInterval;
-			waves[currentWave].spawnNext();
+		if (waves [currentWave].isWaveOver ()) {
+			Debug.Log ("Wave " + currentWave + "Complete");
+			waves[currentWave].destroyPools();
+			currentWave++;
+			waves[currentWave].createPools();
+			spawnTimer = WaveInterval;
+		} else {
+			//spawn enemies
+			spawnTimer -= Time.deltaTime;
+			while (spawnTimer <= 0.0f) {
+				spawnTimer += SpawnInterval;
+				waves [currentWave].spawnNext ();
+			}
 		}
 		//update GUI
 		GUI.souls.text = totalSoulScore.ToString("D4");
@@ -149,11 +214,6 @@ public class GameController : MonoBehaviour {
 			Enemies = enemies;
 			EnemyCount = enemyCount;
 			Pools = new EZObjectPool[6];
-			createPools();
-		}
-
-		~Wave() {
-			destroyPools();
 		}
 
 		public bool isWaveOver() {
@@ -166,7 +226,7 @@ public class GameController : MonoBehaviour {
 			return true;
 		}
 
-		private void createPools() {
+		public void createPools() {
 			Pools[Enemy.Ship1] = EZObjectPool.CreateObjectPool(Control.EnemyShip1Prefab, "SHIP1_WAVE"+Num, Enemies[Enemy.Ship1], false, true, false);
 			Pools[Enemy.Ship2] = EZObjectPool.CreateObjectPool(Control.EnemyShip2Prefab, "SHIP2_WAVE"+Num, Enemies[Enemy.Ship2], false, true, false);
 			Pools[Enemy.Ship3] = EZObjectPool.CreateObjectPool(Control.EnemyShip3Prefab, "SHIP3_WAVE"+Num, Enemies[Enemy.Ship3], false, true, false);
@@ -176,7 +236,7 @@ public class GameController : MonoBehaviour {
 			Num++;
 		}
 
-		private void destroyPools() {
+		public void destroyPools() {
 			for (int i=0; i<Pools.Length; i++) {
 				Pools[i].DeletePool(true);
 			}
