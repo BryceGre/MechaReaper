@@ -326,6 +326,10 @@ public class MechController : MonoBehaviour {
 			this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
 		}
 	}
+
+	public int getSoulScore() {
+		return souls;
+	}
 		
 	public void applyDamage(int damage) {
 		shield -= damage;

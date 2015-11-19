@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using EZObjectPools;
 
 public class GameController : MonoBehaviour {
 	public static float Unit = 2.5f;
 	public GUIController GUI = null;
+	public Canvas WaveMenu = null;
 	
 	public Transform Player = null;
 	public GameObject EnemyShip1Prefab = null;
@@ -24,8 +26,12 @@ public class GameController : MonoBehaviour {
 	private int MaxWaves = 8;
 	private int currentWave = 0;
 
+	private float waveTime = 0.0f;
+	private int waveSouls = 0;
+
 	private bool inProgress = true;
-	
+	private bool showWaveMenu = false;
+
 	private static class Enemy {
 		public const int Ship1 = 0;
 		public const int Mech1 = 1;
@@ -41,6 +47,8 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		//Spawn ();
 		createAsteroidField ();
+		waveTime = 0.0f;
+		waveSouls = 0;
 		spawnTimer = SpawnInterval;
 		waves = new Wave[MaxWaves];
 
@@ -51,7 +59,7 @@ public class GameController : MonoBehaviour {
 		enemies0[Enemy.Mech1] = 0;
 		enemies0[Enemy.Mech2] = 0;
 		enemies0[Enemy.Mech3] = 0;
-		waves [0] = new Wave (this, enemies0, 100);
+		waves [0] = new Wave (this, enemies0, 20);
 
 		int[] enemies1 = new int[6];
 		enemies1[Enemy.Ship1] = 10;
@@ -122,11 +130,23 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (waves [currentWave].isWaveOver ()) {
-			Debug.Log ("Wave " + currentWave + "Complete");
-			waves[currentWave].destroyPools();
-			currentWave++;
-			waves[currentWave].createPools();
-			spawnTimer = WaveInterval;
+			if (showWaveMenu == true) {
+				spawnTimer -= Time.deltaTime;
+				if (spawnTimer <= 0.0f) {
+					GUI.GUICanvas.gameObject.SetActive(false);
+					WaveMenu.gameObject.SetActive(true);
+					Cursor.visible = true;
+					WaveMenu.transform.Find ("Panel1").Find("WaveText").GetComponent<Text>().text = "Wave " + (currentWave+1) + " Complete";
+					int souls = Player.GetComponent<MechController>().getSoulScore() - waveSouls;
+					waveSouls = Player.GetComponent<MechController>().getSoulScore();
+					WaveMenu.transform.Find ("Panel2").Find("SoulsCount").GetComponent<Text>().text = souls.ToString("000") + "/" + waves[currentWave].getEnemies().ToString("000");
+					WaveMenu.transform.Find ("Panel2").Find("TimeCount").GetComponent<Text>().text = Mathf.Floor(waveTime / 60).ToString("00") + ":" + Mathf.RoundToInt(waveTime % 60).ToString("00");
+				}
+			} else {
+				showWaveMenu = true;
+				Debug.Log ("Wave " + currentWave + "Complete");
+				spawnTimer = WaveInterval;
+			}
 		} else {
 			//spawn enemies
 			spawnTimer -= Time.deltaTime;
@@ -134,6 +154,7 @@ public class GameController : MonoBehaviour {
 				spawnTimer += SpawnInterval;
 				waves [currentWave].spawnNext ();
 			}
+			waveTime += Time.deltaTime;
 		}
 		//update GUI
 		MechController mech = Player.GetComponent<MechController> ();
@@ -141,6 +162,21 @@ public class GameController : MonoBehaviour {
 		float shield = (float)mech.shield / (float)mech.getMaxShield();
 		GUI.health.sizeDelta = new Vector2(GUI.getHealthWidth() * health, GUI.health.rect.height);
 		GUI.shield.sizeDelta = new Vector2(GUI.getShieldWidth() * shield, GUI.shield.rect.height);
+	}
+
+	public void nextWave() {
+		if (!waves [currentWave].isWaveOver ())
+			return; 
+		WaveMenu.gameObject.SetActive (false);
+		GUI.GUICanvas.gameObject.SetActive(true);
+		Cursor.visible = false;
+		showWaveMenu = false;
+		waves[currentWave].destroyPools();
+		currentWave++;
+		waves[currentWave].createPools();
+		waveTime = 0.0f;
+		waveSouls = 0;
+		spawnTimer = SpawnInterval;
 	}
 
 	void createAsteroidField (){
@@ -249,6 +285,10 @@ public class GameController : MonoBehaviour {
 					}
 				}
 			}
+		}
+
+		public int getEnemies() {
+			return EnemyCount;
 		}
 	}
 }
