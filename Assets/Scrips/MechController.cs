@@ -6,7 +6,7 @@ public class MechController : MonoBehaviour {
 	public const float TargetDot = 0.9f;
 
 	public RectTransform TargetCircle;
-	public Canvas GUICanvas;
+	public GUIController GUI = null;
 	private float lastScreenWidth;
 
 	public float moveSpeed = 0.5f;
@@ -20,6 +20,8 @@ public class MechController : MonoBehaviour {
 	public Transform RocketPrefab = null;
 	public Transform MissilePrefab = null;
 	public Texture2D targetBoxImage = null;
+
+	private int souls;
 
 	private float regenTimer = 0.0f;
 
@@ -74,11 +76,13 @@ public class MechController : MonoBehaviour {
 	private float autocannonCooldown = 0.25f;
 	private float machinegunCooldown = 0.125f;
 	private float heavyRocketCooldown = 1.0f;
-	private float heavyMissileCooldown = 1.0f;
+	private float heavyMissileCooldown = 0.75f;
+	private int missiles = 100;
 
 	// Use this for initialization
 	void Start () {
 		controller =	gameObject.GetComponent<CharacterController>();
+		souls =			0;
 		reaper =		gameObject.transform.Find ("Reaper");
 		boostLeft =		reaper.Find ("Body").Find ("Boost_Left").gameObject;
 		boostRight =	reaper.Find ("Body").Find ("Boost_Right").gameObject;
@@ -204,7 +208,7 @@ public class MechController : MonoBehaviour {
 
 		rocketCooldown -= Time.deltaTime;
 		while (rocketCooldown < 0.0f) {
-			if (Input.GetButton (RocketButtonName)) {
+			if (Input.GetButtonDown (RocketButtonName)) {
 				Transform rocket = (Transform)Instantiate (RocketPrefab, gameObject.transform.position, Camera.main.transform.rotation);
 				rocketCooldown += heavyRocketCooldown;
 			} else {
@@ -213,27 +217,24 @@ public class MechController : MonoBehaviour {
 		}
 		
 		missileCooldown -= Time.deltaTime;
+		while (missileCooldown < 0.0f) {
+			missiles++;
+			missileCooldown += heavyMissileCooldown;
+		}
 		targetEnemies.Clear ();
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
 		Vector3 lookAt = Camera.main.transform.forward;
-		float missileBackup = missileCooldown;
 		foreach (GameObject enemy in enemies) {
 			Vector3 toEnemy = Vector3.Normalize (enemy.transform.position - Camera.main.transform.position);
 			if (Vector3.Dot (lookAt, toEnemy) > TargetDot) {
 				targetEnemies.Add (enemy);
-				missileCooldown = missileBackup;
-				while (missileCooldown < 0.0f) {
-					if (Input.GetButton (MissileButtonName)) {
-						Transform missile = (Transform)Instantiate (MissilePrefab, gameObject.transform.position, Camera.main.transform.rotation);
-						missile.GetComponent<MissileController> ().Target = enemy.transform;
-						missileCooldown += heavyMissileCooldown;
-					} else {
-						missileCooldown = 0.0f;
-					}
+				if (Input.GetButtonDown (MissileButtonName) && missiles > 0) {
+					Transform missile = (Transform)Instantiate (MissilePrefab, gameObject.transform.position, Camera.main.transform.rotation);
+					missile.GetComponent<MissileController> ().Target = enemy.transform;
+					missiles--;
 				}
 			}
 		}
-
 
 		if (Input.GetButtonDown (PowerButtonName)) {
 			this.gameObject.GetComponent<AscendPower>().usePower();
@@ -257,6 +258,9 @@ public class MechController : MonoBehaviour {
 	}
 
 	void OnGUI() {
+		GUI.missiles.text = missiles.ToString ("D4");
+		GUI.souls.text = souls.ToString("D4");
+
 		foreach (GameObject enemy in targetEnemies) {
 			if (enemy == null) continue;
 			Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
@@ -267,7 +271,7 @@ public class MechController : MonoBehaviour {
 				float boxX = screenPos.x - (width / 2);
 				float boxY = Screen.height - screenPos.y - (height / 2);
 
-				GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
+				UnityEngine.GUI.DrawTexture(new Rect(boxX, boxY, width, height), targetBoxImage);
 			}
 		}
 
@@ -283,7 +287,7 @@ public class MechController : MonoBehaviour {
 			Vector3 left = front - (Camera.main.transform.right * radius);
 			Vector3 bottom = front - (Camera.main.transform.up * radius);
 			
-			RectTransform rect = GUICanvas.GetComponent<RectTransform> ();
+			RectTransform rect = GUI.GUICanvas.GetComponent<RectTransform> ();
 			
 			Vector2 viewRight = Camera.main.WorldToViewportPoint (right);
 			Vector2 viewTop = Camera.main.WorldToViewportPoint (top);
@@ -296,6 +300,12 @@ public class MechController : MonoBehaviour {
 			float botY = (viewBottom.y * rect.sizeDelta.y) - (rect.sizeDelta.y * 0.5f);
 			TargetCircle.sizeDelta = new Vector2 (rightX - leftX, topY - botY);
 		}
+	}
+	
+	
+	public void incrementSoulScore()
+	{
+		souls++;
 	}
 		
 	public void applyDamage(int damage) {

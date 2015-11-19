@@ -69,12 +69,12 @@ public class EnemyShipController : EnemyController {
 					if (hitObject.CompareTag ("Player")) {
 						muzzleFlash.SetActive(true);
 						muzzleFlashTimer = 5;
-						if (Random.Range(0, 2) == 0)
+						float range = Vector3.Distance(hitObject.transform.position, this.transform.position);
+						if (Random.Range(0.0f, range) < 10.0f)
 							Player.GetComponent<MechController>().applyDamage(damage);
 					}
 					if(hitObject.CompareTag ("Debris")){
-						if (Random.Range(0, 2) == 0)
-							hitObject.GetComponent<AsteroidController>().applyDamage(damage);
+						hitObject.GetComponent<AsteroidController>().applyDamage(damage);
 					}
 				}
 

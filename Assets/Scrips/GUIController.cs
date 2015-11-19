@@ -6,6 +6,8 @@ public class GUIController : MonoBehaviour {
 	public RectTransform health;
 	public RectTransform shield;
 	public Text souls;
+	public Text missiles;
+	public Canvas GUICanvas;
 	private float healthWidth;
 	private float shieldWidth;
 	

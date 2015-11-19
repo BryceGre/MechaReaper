@@ -21,11 +21,10 @@ public class GameController : MonoBehaviour {
 	public float SpawnInterval;
 	public float WaveInterval;
 	private float spawnTimer;
-	public int MaxWaves;
+	private int MaxWaves = 8;
 	private int currentWave = 0;
 
 	private bool inProgress = true;
-	private int totalSoulScore;
 	
 	private static class Enemy {
 		public const int Ship1 = 0;
@@ -42,7 +41,6 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		//Spawn ();
 		createAsteroidField ();
-		totalSoulScore = 0;
 		spawnTimer = SpawnInterval;
 		waves = new Wave[MaxWaves];
 
@@ -109,7 +107,7 @@ public class GameController : MonoBehaviour {
 		enemies6[Enemy.Mech3] = 5;
 		waves [6] = new Wave (this, enemies6, 100);
 		
-		int[] enemies7 = new int[7];
+		int[] enemies7 = new int[6];
 		enemies7[Enemy.Ship1] = 0;
 		enemies7[Enemy.Ship2] = 2;
 		enemies7[Enemy.Ship3] = 8;
@@ -138,7 +136,6 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		//update GUI
-		GUI.souls.text = totalSoulScore.ToString("D4");
 		MechController mech = Player.GetComponent<MechController> ();
 		float health = (float)mech.health / (float)mech.getMaxHealth();
 		float shield = (float)mech.shield / (float)mech.getMaxShield();
@@ -189,11 +186,6 @@ public class GameController : MonoBehaviour {
 		float y = (radius * Mathf.Sin(phi) * Mathf.Sin(theta));
 		float z = (radius * Mathf.Cos(phi));
 		return new Vector3(x, y, z);
-	}
-
-	public void incrementSoulScore()
-	{
-		totalSoulScore++;
 	}
 
 	public GameObject getPlayer() {

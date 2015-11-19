@@ -5180,7 +5180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetCircle: {fileID: 356773704}
-  GUICanvas: {fileID: 1874147251}
+  GUI: {fileID: 1874147252}
   moveSpeed: .5
   lookSpeed: 2
   health: 100
@@ -5206,7 +5206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cooldown: 10
-  Icon: {fileID: 0}
+  Icon: {fileID: 826576999}
   Duration: 5
 --- !u!1 &1003197571
 GameObject:
@@ -11756,7 +11756,6 @@ MonoBehaviour:
   asteroidRange: 1200
   SpawnInterval: 1
   WaveInterval: 10
-  MaxWaves: 2
 --- !u!4 &1785952704
 Transform:
   m_ObjectHideFlags: 0
@@ -12193,6 +12192,8 @@ MonoBehaviour:
   health: {fileID: 703747926}
   shield: {fileID: 888342485}
   souls: {fileID: 789574721}
+  missiles: {fileID: 709026667}
+  GUICanvas: {fileID: 1874147251}
 --- !u!1 &1883206472
 GameObject:
   m_ObjectHideFlags: 0
