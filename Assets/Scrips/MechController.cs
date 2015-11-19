@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -96,6 +97,12 @@ public class MechController : MonoBehaviour {
 
 		animator = reaper.GetComponent<Animator>();
 		lastScreenWidth = 0.0f;
+
+		Color c = new Color (1.0f, 1.0f, 1.0f, 0.0f);
+		this.gameObject.GetComponent<ShockwavePower> ().Icon.GetComponent<RawImage> ().color = c;
+		this.gameObject.GetComponent<IntangiblePower> ().Icon.GetComponent<RawImage> ().color = c;
+		this.gameObject.GetComponent<LifestealPower> ().Icon.GetComponent<RawImage> ().color = c;
+		this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
 	}
 	
 	// Update is called once per frame
@@ -239,20 +246,19 @@ public class MechController : MonoBehaviour {
 		if (Input.GetButtonDown (PowerButtonName)) {
 			this.gameObject.GetComponent<AscendPower>().usePower();
 		}
-
 		if (Input.GetButtonDown (Power1ButtonName)) {
 			this.gameObject.GetComponent<AscendPower>().usePower();
 		}
-		if (Input.GetButtonDown (Power2ButtonName)) {
+		if (Input.GetButtonDown (Power2ButtonName) && souls >= 100) {
 			this.gameObject.GetComponent<ShockwavePower>().usePower();
 		}
-		if (Input.GetButtonDown (Power3ButtonName)) {
+		if (Input.GetButtonDown (Power3ButtonName) && souls >= 200) {
 			this.gameObject.GetComponent<IntangiblePower>().usePower();
 		}
-		if (Input.GetButtonDown (Power4ButtonName)) {
+		if (Input.GetButtonDown (Power4ButtonName) && souls >= 300) {
 			this.gameObject.GetComponent<LifestealPower>().usePower();
 		}
-		if (Input.GetButtonDown (Power5ButtonName)) {
+		if (Input.GetButtonDown (Power5ButtonName) && souls >= 400) {
 			this.gameObject.GetComponent<CataclysmPower>().usePower();
 		}
 	}
@@ -306,6 +312,19 @@ public class MechController : MonoBehaviour {
 	public void incrementSoulScore()
 	{
 		souls++;
+		if (souls == 100) {
+			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+			this.gameObject.GetComponent<ShockwavePower> ().Icon.GetComponent<RawImage> ().color = c;
+		} else if (souls == 200) {
+			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+			this.gameObject.GetComponent<IntangiblePower> ().Icon.GetComponent<RawImage> ().color = c;
+		} else if (souls == 300) {
+			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+			this.gameObject.GetComponent<LifestealPower> ().Icon.GetComponent<RawImage> ().color = c;
+		} else if (souls == 400) {
+			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+			this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
+		}
 	}
 		
 	public void applyDamage(int damage) {
