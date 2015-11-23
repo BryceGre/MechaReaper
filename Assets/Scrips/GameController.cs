@@ -129,6 +129,13 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (currentWave >= waves.Length)
+			return;
+		if (Input.GetButtonDown ("Cheat")) {
+			forceNextWave();
+			for (int i=0; i<100; i++)
+				Player.GetComponent<MechController>().incrementSoulScore();
+		}
 		if (waves [currentWave].isWaveOver ()) {
 			if (showWaveMenu == true) {
 				spawnTimer -= Time.deltaTime;
@@ -172,10 +179,33 @@ public class GameController : MonoBehaviour {
 		showWaveMenu = false;
 		waves[currentWave].destroyPools();
 		currentWave++;
-		waves[currentWave].createPools();
-		waveTime = 0.0f;
-		waveSouls = Player.GetComponent<MechController>().getSoulScore();
-		spawnTimer = SpawnInterval;
+		if (currentWave < waves.Length) {
+			waves [currentWave].createPools ();
+			waveTime = 0.0f;
+			waveSouls = Player.GetComponent<MechController> ().getSoulScore ();
+			spawnTimer = SpawnInterval;
+		}
+	}
+
+	private void forceNextWave() {
+		WaveMenu.gameObject.SetActive (false);
+		GUI.GUICanvas.gameObject.SetActive(true);
+		Cursor.visible = false;
+		showWaveMenu = false;
+
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		foreach (GameObject enemy in enemies) {
+			enemy.SetActive(false);
+		}
+
+		waves[currentWave].destroyPools();
+		currentWave++;
+		if (currentWave < waves.Length) {
+			waves [currentWave].createPools ();
+			waveTime = 0.0f;
+			waveSouls = Player.GetComponent<MechController> ().getSoulScore ();
+			spawnTimer = SpawnInterval;
+		}
 	}
 
 	void createAsteroidField (){

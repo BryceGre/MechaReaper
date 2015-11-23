@@ -5508,10 +5508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df56e86f70f4354dba53938a13eda70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cooldown: 5
+  Cooldown: 20
   Icon: {fileID: 1827851408}
   Duration: 5
-  Distance: 10
+  Distance: 15
   DrainAmount: 2
   DrainInterval: .5
   PowerFX: {fileID: 404878, guid: d622dc3b935b3af4c9666624b86a894b, type: 2}
@@ -5526,9 +5526,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d938a60f49d8992479194acd275f048a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cooldown: 5
+  Cooldown: 15
   Icon: {fileID: 1883206473}
-  Duration: 15
+  Duration: 10
   TransparentBody: {fileID: 2100000, guid: e519b74087ffa764a97b98ccf34b516c, type: 2}
   TransparentBlack: {fileID: 2100000, guid: 30a5f5cc81bfb4f4e8e3c873b4eb475c, type: 2}
   etherealState: {fileID: 1215795459}
@@ -5545,8 +5545,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cooldown: 5
   Icon: {fileID: 740283037}
-  Duration: 5
-  Distance: 25
+  Duration: .200000003
+  Distance: 35
   PowerFX: {fileID: 492854, guid: db579e07d697dfa42be0afef08aff34a, type: 2}
 --- !u!114 &968631992
 MonoBehaviour:
@@ -5600,7 +5600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34343c50717414418b5b1e9526f21fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cooldown: 10
+  Cooldown: 30
   Icon: {fileID: 826576999}
   Duration: 5
 --- !u!1 &1003197571
@@ -6206,7 +6206,6 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
