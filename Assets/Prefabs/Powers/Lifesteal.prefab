@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11470318}
   - 198: {fileID: 19864072}
   - 199: {fileID: 19927458}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lifesteal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ GameObject:
   - 4: {fileID: 495494}
   - 33: {fileID: 3355346}
   - 23: {fileID: 2324014}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lifesteal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1281,6 +1281,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: HealAmount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
