@@ -76,7 +76,8 @@ public class EnemyMechController : EnemyController {
 						muzzleFlash.SetActive(true);
 						gunFireAudio.Play();
 						muzzleFlashTimer = 5;
-						if (Random.Range(0, 2) == 0)
+						float range = Vector3.Distance(hitObject.transform.position, this.transform.position);
+						if (Random.Range(0.0f, range) < 10.0f)
 							Player.GetComponent<MechController>().applyDamage(damage);
 					}
 					if(hitObject.CompareTag ("Debris")){
