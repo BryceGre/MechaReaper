@@ -77,8 +77,8 @@ public class MechController : MonoBehaviour {
 	private float autocannonCooldown = 0.25f;
 	private float machinegunCooldown = 0.125f;
 	private float heavyRocketCooldown = 1.0f;
-	private float heavyMissileCooldown = 0.75f;
-	private int missiles = 100;
+	private float heavyMissileCooldown = 1.0f;
+	private int missiles = 10;
 
 	// Use this for initialization
 	void Start () {
