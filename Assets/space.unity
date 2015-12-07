@@ -5157,7 +5157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cooldown: 5
   Icon: {fileID: 740283037}
-  Duration: .200000003
+  Duration: 5
   Distance: 35
   PowerFX: {fileID: 492854, guid: db579e07d697dfa42be0afef08aff34a, type: 2}
 --- !u!114 &968631992
@@ -5173,7 +5173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cooldown: 1
   Icon: {fileID: 469838495}
-  Duration: .5
+  Duration: .200000003
   Distance: 25
 --- !u!114 &968631993
 MonoBehaviour:
@@ -5818,6 +5818,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
