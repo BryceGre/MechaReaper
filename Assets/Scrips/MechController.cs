@@ -32,8 +32,6 @@ public class MechController : MonoBehaviour {
 	private CharacterController controller;
 	private GameObject boostLeft;
 	private GameObject boostRight;
-	private GameObject boostTop;
-	private GameObject boostBottom;
 	
 	private Vector3 moveDir = Vector3.zero;
 
@@ -68,7 +66,6 @@ public class MechController : MonoBehaviour {
 	public GameObject muzzleFlash;
 	public GameObject bulletFlash;
 	private int muzzleFlashTimer = -1;
-	private int bulletFlashTimer = -1;
 	
 	private int railgunDamage = 12;
 	private int autocannonDamage = 6;
@@ -87,8 +84,6 @@ public class MechController : MonoBehaviour {
 		reaper =		gameObject.transform.Find ("Reaper");
 		boostLeft =		reaper.Find ("Body").Find ("Boost_Left").gameObject;
 		boostRight =	reaper.Find ("Body").Find ("Boost_Right").gameObject;
-		boostTop =		reaper.Find ("Body").Find ("Boost_Top").gameObject;
-		boostBottom =	reaper.Find ("Body").Find ("Boost_Bottom").gameObject;
 		Cursor.visible = false;
 		targetEnemies = new List<GameObject> ();
 
@@ -126,7 +121,7 @@ public class MechController : MonoBehaviour {
 		float vertInput = -Input.GetAxisRaw ("Vertical");
 		float speedMod = 1.0f;
 		if (Input.GetButton ("Jump"))
-			speedMod = 2.0f;
+			speedMod = 1.5f;
 		float horizontal = (moveSpeed * speedMod) * horiInput;
 		float vertical = (moveSpeed * speedMod) * vertInput;
 
@@ -216,7 +211,7 @@ public class MechController : MonoBehaviour {
 		rocketCooldown -= Time.deltaTime;
 		while (rocketCooldown < 0.0f) {
 			if (Input.GetButtonDown (RocketButtonName)) {
-				Transform rocket = (Transform)Instantiate (RocketPrefab, gameObject.transform.position, Camera.main.transform.rotation);
+				Instantiate (RocketPrefab, gameObject.transform.position, Camera.main.transform.rotation);
 				rocketCooldown += heavyRocketCooldown;
 			} else {
 				rocketCooldown = 0.0f;

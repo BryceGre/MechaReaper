@@ -29,7 +29,6 @@ public class GameController : MonoBehaviour {
 	private float waveTime = 0.0f;
 	private int waveSouls = 0;
 
-	private bool inProgress = true;
 	private bool showWaveMenu = false;
 
 	private static class Enemy {

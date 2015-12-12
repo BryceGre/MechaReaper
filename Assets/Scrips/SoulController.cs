@@ -6,13 +6,11 @@ public class SoulController : MonoBehaviour {
 	public float MoveSpeed;
 	private GameObject player;
 	private float soulTimer;
-	private bool flickerActiveState;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
 		soulTimer = 20.0f;
-		flickerActiveState = true;
 	}
 	
 	// Update is called once per frame
