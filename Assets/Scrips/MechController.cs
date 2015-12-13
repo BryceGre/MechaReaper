@@ -58,10 +58,19 @@ public class MechController : MonoBehaviour {
 	//Sword variables
 	private string swordButtonName = "Fire2";
 	private float swordCooldown = 0.0f;
-	public GameObject swordSlash;
-	private float slashCooldown = 4.0f;
+	private GameObject swordSlash;
+	private float slashCooldown = 0.0f;
 	private Animator animator = null;
 	private Transform reaper;
+
+	public GameObject normalSwordSlash;
+	public GameObject longSwordSlash;
+	public GameObject daggerSlash;
+
+	private float daggerCooldown = 2.0f;
+	private float normalSwordCooldown = 4.0f;
+	private float longSwordCooldown = 8.0f;
+
 
 	public GameObject autoCannonMuzzleFlash;
 	public GameObject autoCannonBulletFlash;
@@ -129,6 +138,20 @@ public class MechController : MonoBehaviour {
 			gunDamage = machinegunDamage;
 			gunCooldown = machinegunCooldown;
 
+		}
+
+		int swordID = PlayerPrefs.GetInt ("melee");
+		if (swordID == 0) {
+			swordSlash = normalSwordSlash;
+			slashCooldown = normalSwordCooldown;
+
+		} else if (swordID == 1) {
+			swordSlash = longSwordSlash;
+			swordCooldown = longSwordCooldown;
+
+		} else if (swordID == 2) {
+			swordSlash = daggerSlash;
+			swordCooldown = daggerCooldown;
 		}
 
 
