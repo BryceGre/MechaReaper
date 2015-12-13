@@ -145,6 +145,7 @@ public class GameController : MonoBehaviour {
 			over = Defeat;
 		}
 		if (GameOver) {
+			this.pause();
 			GUI.GUICanvas.gameObject.SetActive(false);
 			over.gameObject.SetActive(true);
 			Cursor.visible = true;
@@ -185,9 +186,13 @@ public class GameController : MonoBehaviour {
 		}
 		if (Input.GetButtonDown("Pause")) {
 			if (Time.timeScale == 0.0f) {
+				Pause.gameObject.SetActive (false);
+				Cursor.visible = false;
 				this.unPause();
 			} else if (Cursor.visible == false) {
 				this.pause();
+				Cursor.visible = true;
+				Pause.gameObject.SetActive(true);
 			}
 			return;
 		}
@@ -253,19 +258,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void goToMainMenu() {
+		this.unPause ();
 		Application.LoadLevel ("menu");
 	}
 
 	public void pause() {
 		Time.timeScale = 0.0f;
 		Camera.main.GetComponent<AudioSource> ().Pause ();
-		Cursor.visible = true;
-		Pause.gameObject.SetActive(true);
 	}
 
 	public void unPause() {
-		Pause.gameObject.SetActive (false);
-		Cursor.visible = false;
 		Camera.main.GetComponent<AudioSource> ().UnPause ();
 		Time.timeScale = 1.0f;
 
