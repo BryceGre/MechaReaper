@@ -6,6 +6,7 @@ public class MainMenuController : MonoBehaviour {
 	public GameObject Garage = null;
 	public GameObject About = null;
 	public GameObject Controls = null;
+	public GameObject Controls2 = null;
 	public Font Font;
 	public AudioClip MouseOverClip;
 	public AudioClip MouseOutClip;
@@ -52,12 +53,19 @@ public class MainMenuController : MonoBehaviour {
 	}
 
 	public void ClickPlayGame() {
+		this.gameObject.SetActive (false);
+		Controls2.gameObject.SetActive (true);
+	}
+
+	public void PlayGame() {
+		Controls2.gameObject.SetActive (false);
+		this.gameObject.SetActive (true);
 		//Camera.main.clearFlags = CameraClearFlags.Skybox;
 		this.transform.Find("ContainerPanel").gameObject.SetActive (false);
 		Rect rect = this.GetComponent<RectTransform> ().rect;
 		scrollRect = new Rect (0, 0, rect.width, rect.height);
 		scrollRect.y = this.GetComponent<RectTransform> ().rect.height;
-
+		
 		Camera.main.GetComponent<AudioSource> ().PlayOneShot (ClickClip);
 	}
 
