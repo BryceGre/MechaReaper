@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour {
 	public static float Unit = 2.5f;
 	public GUIController GUI = null;
 	public Canvas WaveMenu = null;
+	public Canvas Victory = null;
+	public Canvas Defeat = null;
 	
 	public Transform Player = null;
 	public GameObject EnemyShip1Prefab = null;
@@ -22,6 +24,7 @@ public class GameController : MonoBehaviour {
 	
 	public float SpawnInterval;
 	public float WaveInterval;
+	private bool GameOver = false;
 	private float spawnTimer;
 	private int MaxWaves = 8;
 	private int currentWave = 0;
@@ -45,6 +48,7 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Spawn ();
+		GameOver = false;
 		createAsteroidField ();
 		waveTime = 0.0f;
 		waveSouls = 0;
@@ -128,12 +132,60 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (currentWave >= waves.Length)
+		if (GameOver)
 			return;
+		Canvas over = null;
+		if (currentWave >= waves.Length) {
+			GameOver = true;
+			over = Victory;
+		} else if (Player.GetComponent<MechController> ().health <= 0) {
+			GameOver = true;
+			over = Defeat;
+		}
+		if (GameOver) {
+			GUI.GUICanvas.gameObject.SetActive(false);
+			over.gameObject.SetActive(true);
+
+			int souls = Player.GetComponent<MechController>().getSoulScore();
+			float time = Time.timeSinceLevelLoad;
+			over.transform.Find("Panel2").Find ("SoulsCount").GetComponent<Text>().text = souls.ToString("D3") + "/" + (currentWave * 100).ToString("D3");
+			over.transform.Find("Panel2").Find ("TimeCount").GetComponent<Text>().text = Mathf.FloorToInt(time / 60).ToString("00") + ":" + Mathf.RoundToInt(time % 60).ToString("00");
+
+			bool insert = false;
+			string outSouls = "";
+			string outTime = "";
+			for (int i=0; i<10; i++) {
+				int highSouls = PlayerPrefs.GetInt ("high-souls-" + i);
+				float highTime = PlayerPrefs.GetFloat("high-time-" + i);
+				if (insert == false) {
+					if (souls > highSouls || (souls == highSouls && time > highTime)) {
+						for (int j=9; j>i; j--) {
+							PlayerPrefs.SetInt("high-souls-" + j, PlayerPrefs.GetInt ("high-souls-" + (j-1)));
+							PlayerPrefs.SetFloat("high-time-" + j, PlayerPrefs.GetFloat ("high-souls-" + (j-1)));
+							PlayerPrefs.SetInt("high-wave-" + j, PlayerPrefs.GetInt ("high-wave-" + (j-1)));
+						}
+						PlayerPrefs.SetInt("high-souls-" + i, souls);
+						PlayerPrefs.SetFloat("high-time-" + i, time);
+						PlayerPrefs.SetInt("high-wave-" + i, currentWave);
+						PlayerPrefs.Save();
+						insert = true;
+					}
+				}
+				outSouls += PlayerPrefs.GetInt ("high-souls-" + i).ToString("D3") + "/" + (PlayerPrefs.GetInt ("high-wave-" + i) * 100).ToString("D3") + "\n";
+				outTime += Mathf.FloorToInt(PlayerPrefs.GetFloat("high-time-" + i) / 60).ToString("00") + ":" + Mathf.RoundToInt(PlayerPrefs.GetFloat("high-time-" + i) % 60).ToString("00") + "\n";
+			}
+
+			over.transform.Find("Panel3").Find("SoulsCount").GetComponent<Text>().text = outSouls;
+			over.transform.Find("Panel3").Find("TimeCount").GetComponent<Text>().text = outTime;
+
+			return;
+		}
+
 		if (Input.GetButtonDown ("Cheat")) {
 			forceNextWave();
 			for (int i=0; i<100; i++)
 				Player.GetComponent<MechController>().incrementSoulScore();
+			return;
 		}
 		if (waves [currentWave].isWaveOver ()) {
 			if (showWaveMenu == true) {
@@ -172,10 +224,12 @@ public class GameController : MonoBehaviour {
 	public void nextWave() {
 		if (!waves [currentWave].isWaveOver ())
 			return; 
+
 		WaveMenu.gameObject.SetActive (false);
 		GUI.GUICanvas.gameObject.SetActive(true);
 		Cursor.visible = false;
 		showWaveMenu = false;
+
 		waves[currentWave].destroyPools();
 		currentWave++;
 		if (currentWave < waves.Length) {
@@ -184,6 +238,10 @@ public class GameController : MonoBehaviour {
 			waveSouls = Player.GetComponent<MechController> ().getSoulScore ();
 			spawnTimer = SpawnInterval;
 		}
+	}
+
+	public void goToMainMenu() {
+		Application.LoadLevel ("menu");
 	}
 
 	private void forceNextWave() {
