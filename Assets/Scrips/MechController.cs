@@ -67,9 +67,9 @@ public class MechController : MonoBehaviour {
 	public GameObject longSwordSlash;
 	public GameObject daggerSlash;
 
-	private float daggerCooldown = 2.0f;
-	private float normalSwordCooldown = 4.0f;
-	private float longSwordCooldown = 8.0f;
+	private float daggerCooldown = 1.0f;
+	private float normalSwordCooldown = 3.0f;
+	private float longSwordCooldown = 6.0f;
 
 
 	public GameObject autoCannonMuzzleFlash;
@@ -95,6 +95,11 @@ public class MechController : MonoBehaviour {
 
 	private int gunDamage = 0;
 	private float gunCooldown = 0;
+	private float normalSwordAnimatorSpeed = 1.0f;
+	private float longSwordAnimatorSpeed = 0.5f;
+	private float daggerSwordAnimatorSpeed = 2.0f;
+
+	private float swordAnimatorSpeed;
 	
 
 	// Use this for initialization
@@ -144,14 +149,17 @@ public class MechController : MonoBehaviour {
 		if (swordID == 0) {
 			swordSlash = normalSwordSlash;
 			slashCooldown = normalSwordCooldown;
+			swordAnimatorSpeed = normalSwordAnimatorSpeed;
 
 		} else if (swordID == 1) {
 			swordSlash = longSwordSlash;
-			swordCooldown = longSwordCooldown;
+			slashCooldown = longSwordCooldown;
+			swordAnimatorSpeed = longSwordAnimatorSpeed;
 
 		} else if (swordID == 2) {
 			swordSlash = daggerSlash;
-			swordCooldown = daggerCooldown;
+			slashCooldown = daggerCooldown;
+			swordAnimatorSpeed = daggerSwordAnimatorSpeed;
 		}
 
 
@@ -247,15 +255,15 @@ public class MechController : MonoBehaviour {
 				fireCooldown = 0.0f;
 			}
 		}
-		if (swordCooldown < 2.5f && swordSlash.gameObject.activeSelf == true) {
+		swordCooldown -= Time.deltaTime;
+		if (swordCooldown < (slashCooldown/1.5) && swordSlash.gameObject.activeSelf == true) {
 			swordSlash.gameObject.SetActive(false);
 
 		}
-
-		swordCooldown -= Time.deltaTime;
 		while (swordCooldown < 0.0f) {
 			if (Input.GetButton (swordButtonName)) {
 				swordSlash.gameObject.SetActive (true);
+				animator.speed = swordAnimatorSpeed;
 				animator.SetTrigger ("isSwinging");
 				swordCooldown += slashCooldown;
 
