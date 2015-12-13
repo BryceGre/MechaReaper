@@ -8,6 +8,7 @@ public class GUIController : MonoBehaviour {
 	public Text souls;
 	public Text missiles;
 	public Canvas GUICanvas;
+	public RectTransform[] tooltips;
 	private float healthWidth;
 	private float shieldWidth;
 	

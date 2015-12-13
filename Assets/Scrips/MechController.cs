@@ -123,6 +123,8 @@ public class MechController : MonoBehaviour {
 		this.gameObject.GetComponent<IntangiblePower> ().Icon.GetComponent<RawImage> ().color = c;
 		this.gameObject.GetComponent<LifestealPower> ().Icon.GetComponent<RawImage> ().color = c;
 		this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
+		
+		GUI.tooltips[0].gameObject.SetActive(true);
 
 		int gunID = PlayerPrefs.GetInt ("gun");
 		if (gunID == 0) {
@@ -378,15 +380,23 @@ public class MechController : MonoBehaviour {
 		if (souls == 100) {
 			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
 			this.gameObject.GetComponent<ShockwavePower> ().Icon.GetComponent<RawImage> ().color = c;
+			GUI.tooltips[0].gameObject.SetActive(false);
+			GUI.tooltips[1].gameObject.SetActive(true);
 		} else if (souls == 200) {
 			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
 			this.gameObject.GetComponent<IntangiblePower> ().Icon.GetComponent<RawImage> ().color = c;
+			GUI.tooltips[1].gameObject.SetActive(false);
+			GUI.tooltips[2].gameObject.SetActive(true);
 		} else if (souls == 300) {
 			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
 			this.gameObject.GetComponent<LifestealPower> ().Icon.GetComponent<RawImage> ().color = c;
+			GUI.tooltips[2].gameObject.SetActive(false);
+			GUI.tooltips[3].gameObject.SetActive(true);
 		} else if (souls == 400) {
 			Color c = new Color (1.0f, 1.0f, 1.0f, 1.0f);
 			this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
+			GUI.tooltips[3].gameObject.SetActive(false);
+			GUI.tooltips[4].gameObject.SetActive(true);
 		}
 	}
 
