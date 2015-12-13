@@ -17370,7 +17370,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -17392,6 +17392,9 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+<<<<<<< HEAD
+    m_RotationOrder: 0
+=======
 --- !u!1 &1620000352
 GameObject:
   m_ObjectHideFlags: 0
@@ -17455,6 +17458,7 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1620000352}
     m_RotationOrder: 4
+>>>>>>> 26332fdcbdf4e7cfd55035df36c067444c988ccf
 --- !u!1001 &1622872384
 Prefab:
   m_ObjectHideFlags: 0
