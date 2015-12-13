@@ -63,8 +63,15 @@ public class MechController : MonoBehaviour {
 	private Animator animator = null;
 	private Transform reaper;
 
-	public GameObject muzzleFlash;
-	public GameObject bulletFlash;
+	public GameObject autoCannonMuzzleFlash;
+	public GameObject autoCannonBulletFlash;
+	public GameObject railGunMuzzleFlash;
+	public GameObject railGunBulletFlash;
+	public GameObject machineGunMuzzleFlash;
+	public GameObject machineGunBulletFlash;
+	private GameObject muzzleFlash;
+	private GameObject bulletFlash;
+
 	private int muzzleFlashTimer = -1;
 	
 	private int railgunDamage = 12;
@@ -76,6 +83,10 @@ public class MechController : MonoBehaviour {
 	private float heavyRocketCooldown = 1.0f;
 	private float heavyMissileCooldown = 1.0f;
 	private int missiles = 10;
+
+	private int gunDamage = 0;
+	private float gunCooldown = 0;
+	
 
 	// Use this for initialization
 	void Start () {
@@ -98,6 +109,29 @@ public class MechController : MonoBehaviour {
 		this.gameObject.GetComponent<IntangiblePower> ().Icon.GetComponent<RawImage> ().color = c;
 		this.gameObject.GetComponent<LifestealPower> ().Icon.GetComponent<RawImage> ().color = c;
 		this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
+
+		int gunID = PlayerPrefs.GetInt ("gun");
+		if (gunID == 0) {
+			muzzleFlash = autoCannonMuzzleFlash;
+			bulletFlash = autoCannonBulletFlash;
+			gunDamage = autocannonDamage;
+			gunCooldown = autocannonCooldown;
+
+		} else if (gunID == 1) {
+			muzzleFlash = railGunMuzzleFlash;
+			bulletFlash = railGunBulletFlash;
+			gunDamage = railgunDamage;
+			gunCooldown = railgunCooldown;
+
+		} else if (gunID == 2) {
+			muzzleFlash = machineGunMuzzleFlash;
+			bulletFlash = machineGunBulletFlash;
+			gunDamage = machinegunDamage;
+			gunCooldown = machinegunCooldown;
+
+		}
+
+
 	}
 	
 	// Update is called once per frame
@@ -176,16 +210,16 @@ public class MechController : MonoBehaviour {
 					if (Physics.Raycast (ray2, out hit2)) {
 						GameObject hitObject = hit2.collider.gameObject;
 						if (hitObject.CompareTag ("Enemy")) {
-							hitObject.GetComponent<EnemyController> ().applyDamage (autocannonDamage);
+							hitObject.GetComponent<EnemyController> ().applyDamage (gunDamage);
 						} else if (hitObject.CompareTag ("Debris")) {
-							hitObject.GetComponent<AsteroidController>().applyDamage(autocannonDamage);
+							hitObject.GetComponent<AsteroidController>().applyDamage(gunDamage);
 						}
 					}
 				}
 				muzzleFlash.gameObject.SetActive (true);
 				muzzleFlashTimer = 5;
 
-				fireCooldown += autocannonCooldown;
+				fireCooldown += gunCooldown;
 			} else {
 				fireCooldown = 0.0f;
 			}
