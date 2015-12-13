@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	public Canvas WaveMenu = null;
 	public Canvas Victory = null;
 	public Canvas Defeat = null;
+	public Canvas Pause = null;
 	
 	public Transform Player = null;
 	public GameObject EnemyShip1Prefab = null;
@@ -49,6 +50,7 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		//Spawn ();
 		GameOver = false;
+		Cursor.visible = false;
 		createAsteroidField ();
 		waveTime = 0.0f;
 		waveSouls = 0;
@@ -145,6 +147,7 @@ public class GameController : MonoBehaviour {
 		if (GameOver) {
 			GUI.GUICanvas.gameObject.SetActive(false);
 			over.gameObject.SetActive(true);
+			Cursor.visible = true;
 
 			int souls = Player.GetComponent<MechController>().getSoulScore();
 			float time = Time.timeSinceLevelLoad;
@@ -180,10 +183,16 @@ public class GameController : MonoBehaviour {
 
 			return;
 		}
-		if (Input.GetKey("Pause")) {
-			Time.timeScale = 0.0f;
+		if (Input.GetButtonDown("Pause")) {
+			if (Time.timeScale == 0.0f) {
+				this.unPause();
+			} else if (Cursor.visible == false) {
+				this.pause();
+			}
 			return;
 		}
+		if (Cursor.visible == true) 
+			return;
 		if (Input.GetButtonDown ("Cheat")) {
 			forceNextWave();
 			for (int i=0; i<100; i++)
@@ -245,6 +254,21 @@ public class GameController : MonoBehaviour {
 
 	public void goToMainMenu() {
 		Application.LoadLevel ("menu");
+	}
+
+	public void pause() {
+		Time.timeScale = 0.0f;
+		Camera.main.GetComponent<AudioSource> ().Pause ();
+		Cursor.visible = true;
+		Pause.gameObject.SetActive(true);
+	}
+
+	public void unPause() {
+		Pause.gameObject.SetActive (false);
+		Cursor.visible = false;
+		Camera.main.GetComponent<AudioSource> ().UnPause ();
+		Time.timeScale = 1.0f;
+
 	}
 
 	private void forceNextWave() {

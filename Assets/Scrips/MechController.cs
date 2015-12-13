@@ -167,6 +167,9 @@ public class MechController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Time.timeScale == 0.0f)
+			return;
+
 		regenTimer += Time.deltaTime;
 		while (regenTimer >= regenTime) {
 			regenTimer -= regenTime;
