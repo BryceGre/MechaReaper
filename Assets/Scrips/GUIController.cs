@@ -9,6 +9,7 @@ public class GUIController : MonoBehaviour {
 	public Text missiles;
 	public Canvas GUICanvas;
 	public RectTransform[] tooltips;
+	public RectTransform tooltip;
 	private float healthWidth;
 	private float shieldWidth;
 	

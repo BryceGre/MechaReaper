@@ -125,6 +125,7 @@ public class MechController : MonoBehaviour {
 		this.gameObject.GetComponent<CataclysmPower> ().Icon.GetComponent<RawImage> ().color = c;
 		
 		GUI.tooltips[0].gameObject.SetActive(true);
+		GUI.tooltip.gameObject.SetActive (true);
 
 		int gunID = PlayerPrefs.GetInt ("gun");
 		if (gunID == 0) {
@@ -304,6 +305,7 @@ public class MechController : MonoBehaviour {
 					Transform missile = (Transform)Instantiate (MissilePrefab, gameObject.transform.position, Camera.main.transform.rotation);
 					missile.GetComponent<MissileController> ().Target = enemy.transform;
 					missiles--;
+					GUI.tooltip.gameObject.SetActive (false);
 				}
 			}
 		}
@@ -313,18 +315,23 @@ public class MechController : MonoBehaviour {
 		}
 		if (Input.GetButtonDown (Power1ButtonName)) {
 			this.gameObject.GetComponent<AscendPower>().usePower();
+			GUI.tooltips[0].gameObject.SetActive(false);
 		}
 		if (Input.GetButtonDown (Power2ButtonName) && souls >= 100) {
 			this.gameObject.GetComponent<ShockwavePower>().usePower();
+			GUI.tooltips[1].gameObject.SetActive(false);
 		}
 		if (Input.GetButtonDown (Power3ButtonName) && souls >= 200) {
 			this.gameObject.GetComponent<IntangiblePower>().usePower();
+			GUI.tooltips[2].gameObject.SetActive(false);
 		}
 		if (Input.GetButtonDown (Power4ButtonName) && souls >= 300) {
 			this.gameObject.GetComponent<LifestealPower>().usePower();
+			GUI.tooltips[3].gameObject.SetActive(false);
 		}
 		if (Input.GetButtonDown (Power5ButtonName) && souls >= 400) {
 			this.gameObject.GetComponent<CataclysmPower>().usePower();
+			GUI.tooltips[4].gameObject.SetActive(false);
 		}
 	}
 
