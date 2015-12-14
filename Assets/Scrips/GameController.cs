@@ -211,7 +211,7 @@ public class GameController : MonoBehaviour {
 					GUI.GUICanvas.gameObject.SetActive(false);
 					WaveMenu.gameObject.SetActive(true);
 					Cursor.visible = true;
-					WaveMenu.transform.Find ("Panel1").Find("WaveText").GetComponent<Text>().text = "Wave " + (currentWave+1) + " Complete";
+					WaveMenu.transform.Find ("Panel1").Find("TitleText").GetComponent<Text>().text = "Wave " + (currentWave+1) + " Complete";
 					int souls = Player.GetComponent<MechController>().getSoulScore() - waveSouls;
 					WaveMenu.transform.Find ("Panel2").Find("SoulsCount").GetComponent<Text>().text = souls.ToString("D3") + "/100";
 					WaveMenu.transform.Find ("Panel2").Find("TimeCount").GetComponent<Text>().text = Mathf.FloorToInt(waveTime / 60).ToString("00") + ":" + Mathf.RoundToInt(waveTime % 60).ToString("00");
