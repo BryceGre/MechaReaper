@@ -191,12 +191,12 @@ public class GameController : MonoBehaviour {
 				this.unPause();
 			} else if (Cursor.visible == false) {
 				this.pause();
-				Cursor.visible = true;
 				Pause.gameObject.SetActive(true);
+				Cursor.visible = true;
 			}
 			return;
 		}
-		if (Cursor.visible == true) 
+		if (Time.timeScale == 0.0f)
 			return;
 		if (Input.GetButtonDown ("Cheat")) {
 			forceNextWave();
@@ -208,6 +208,7 @@ public class GameController : MonoBehaviour {
 			if (showWaveMenu == true) {
 				spawnTimer -= Time.deltaTime;
 				if (spawnTimer <= 0.0f) {
+					this.pause();
 					GUI.GUICanvas.gameObject.SetActive(false);
 					WaveMenu.gameObject.SetActive(true);
 					Cursor.visible = true;
@@ -238,6 +239,11 @@ public class GameController : MonoBehaviour {
 		GUI.shield.sizeDelta = new Vector2(GUI.getShieldWidth() * shield, GUI.shield.rect.height);
 	}
 
+	void OnApplicationFocus(bool focusStatus) {
+		if (focusStatus && Time.timeScale != 0.0f)
+			Cursor.visible = false;
+	}
+
 	public void nextWave() {
 		if (!waves [currentWave].isWaveOver ())
 			return; 
@@ -255,10 +261,21 @@ public class GameController : MonoBehaviour {
 			waveSouls = Player.GetComponent<MechController> ().getSoulScore ();
 			spawnTimer = SpawnInterval;
 		}
+
+		this.unPause();
 	}
 
 	public void goToMainMenu() {
-		this.unPause ();
+		Camera.main.GetComponent<AudioSource> ().UnPause ();
+		Time.timeScale = 1.0f;
+
+		Pause.gameObject.SetActive (false);
+		Victory.gameObject.SetActive (false);
+		Defeat.gameObject.SetActive (false);
+		GUI.GUICanvas.gameObject.SetActive(true);
+
+		Cursor.visible = true;
+
 		Application.LoadLevel ("menu");
 	}
 
@@ -270,7 +287,8 @@ public class GameController : MonoBehaviour {
 	public void unPause() {
 		Camera.main.GetComponent<AudioSource> ().UnPause ();
 		Time.timeScale = 1.0f;
-
+		Pause.gameObject.SetActive (false);
+		Cursor.visible = false;
 	}
 
 	private void forceNextWave() {
@@ -292,6 +310,8 @@ public class GameController : MonoBehaviour {
 			waveSouls = Player.GetComponent<MechController> ().getSoulScore ();
 			spawnTimer = SpawnInterval;
 		}
+		
+		this.unPause();
 	}
 
 	void createAsteroidField (){
@@ -400,6 +420,7 @@ public class GameController : MonoBehaviour {
 					}
 				}
 			}
+			Debug.Log ("could not spawn next enemy");
 		}
 	}
 }

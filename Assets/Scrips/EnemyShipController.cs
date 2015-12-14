@@ -18,6 +18,9 @@ public class EnemyShipController : EnemyController {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Time.timeScale == 0.0f)
+			return;
+
 		if (health <= 0) {
 			this.destroyEnemy();
 		}
