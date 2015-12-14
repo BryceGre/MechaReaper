@@ -51,6 +51,7 @@ public class GameController : MonoBehaviour {
 		//Spawn ();
 		GameOver = false;
 		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 		createAsteroidField ();
 		waveTime = 0.0f;
 		waveSouls = 0;
@@ -148,7 +149,6 @@ public class GameController : MonoBehaviour {
 			this.pause();
 			GUI.GUICanvas.gameObject.SetActive(false);
 			over.gameObject.SetActive(true);
-			Cursor.visible = true;
 
 			int souls = Player.GetComponent<MechController>().getSoulScore();
 			float time = Time.timeSinceLevelLoad;
@@ -187,12 +187,10 @@ public class GameController : MonoBehaviour {
 		if (Input.GetButtonDown("Pause")) {
 			if (Time.timeScale == 0.0f) {
 				Pause.gameObject.SetActive (false);
-				Cursor.visible = false;
 				this.unPause();
 			} else if (Cursor.visible == false) {
 				this.pause();
 				Pause.gameObject.SetActive(true);
-				Cursor.visible = true;
 			}
 			return;
 		}
@@ -211,7 +209,6 @@ public class GameController : MonoBehaviour {
 					this.pause();
 					GUI.GUICanvas.gameObject.SetActive(false);
 					WaveMenu.gameObject.SetActive(true);
-					Cursor.visible = true;
 					WaveMenu.transform.Find ("Panel1").Find("TitleText").GetComponent<Text>().text = "Wave " + (currentWave+1) + " Complete";
 					int souls = Player.GetComponent<MechController>().getSoulScore() - waveSouls;
 					WaveMenu.transform.Find ("Panel2").Find("SoulsCount").GetComponent<Text>().text = souls.ToString("D3") + "/100";
@@ -240,8 +237,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	void OnApplicationFocus(bool focusStatus) {
-		if (focusStatus && Time.timeScale != 0.0f)
-			Cursor.visible = false;
+		if (focusStatus)
+			this.unPause();
+		else
+			this.pause();
 	}
 
 	public void nextWave() {
@@ -250,7 +249,6 @@ public class GameController : MonoBehaviour {
 
 		WaveMenu.gameObject.SetActive (false);
 		GUI.GUICanvas.gameObject.SetActive(true);
-		Cursor.visible = false;
 		showWaveMenu = false;
 
 		waves[currentWave].destroyPools();
@@ -282,19 +280,22 @@ public class GameController : MonoBehaviour {
 	public void pause() {
 		Time.timeScale = 0.0f;
 		Camera.main.GetComponent<AudioSource> ().Pause ();
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 	}
 
 	public void unPause() {
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 		Camera.main.GetComponent<AudioSource> ().UnPause ();
 		Time.timeScale = 1.0f;
+		
 		Pause.gameObject.SetActive (false);
-		Cursor.visible = false;
 	}
 
 	private void forceNextWave() {
 		WaveMenu.gameObject.SetActive (false);
 		GUI.GUICanvas.gameObject.SetActive(true);
-		Cursor.visible = false;
 		showWaveMenu = false;
 
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
@@ -412,7 +413,7 @@ public class GameController : MonoBehaviour {
 			for (int i=0; i<Pools.Length; i++) {
 				lastSpawn++;
 				if (lastSpawn >= Pools.Length) lastSpawn -= Pools.Length;
-				if (Pools[lastSpawn].PoolSize > 0)  {
+				if (Pools[lastSpawn].PoolSize > 0) {
 					if (Pools[lastSpawn].TryGetNextObject(Control.Player.transform.position + randomPointOnSphere(50.0f), Quaternion.identity, out obj)) {
 						obj.GetComponent<EnemyController>().Player = Control.Player;
 						EnemyCount--;
