@@ -2850,7 +2850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &737788236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3374,13 +3374,15 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\n\nTypes Of Swords - Longsword, Sword, Dagger\n\t\t\tLongsword \t= Swing
-    Rate - *     |   Damage Radius - ***\n\t\t\tSword \t\t\t= Swing Rate - **   |
-    \  Damage Radius - **\n\t\t\tDagger \t\t= Swing Rate - *** |   Damage Radius -
-    *   \n\t\n\tSouls - Collect as many souls as possible!  The more souls collected,
-    the more abilities you can unlock!\n\n\tWave System - Levels are broken down into
-    waves.  Each wave consists of a blend of different enemies and each wave gets
-    longer and harder as you progress. \n\n\n\n\t"
+  m_Text: "Health Bar - Blue Bar represents shield and will regenerate over time.\n\t\t\t\tGreen
+    Bar represents core health, does not regenerate over time. \n\nTypes Of Swords
+    - Longsword, Sword, Dagger\n\t\t\tLongsword \t= Swing Rate - *     |   Damage
+    Radius - ***\n\t\t\tSword \t\t\t= Swing Rate - **   |   Damage Radius - **\n\t\t\tDagger
+    \t\t= Swing Rate - *** |   Damage Radius - *   \n\t\n\tSouls - Collect as many
+    souls as possible!  The more souls collected, the more abilities you can unlock!
+    \ Each soul will also regenerate a small amount of core health.\n\n\tWave System
+    - Levels are broken down into waves.  Each wave consists of a blend of different
+    enemies and each wave gets longer and harder as you progress. \n\n\n\n\t"
 --- !u!222 &884703259
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6648,7 +6650,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1851800739
 RectTransform:
   m_ObjectHideFlags: 0
