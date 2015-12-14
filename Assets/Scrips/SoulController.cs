@@ -4,6 +4,7 @@ using System.Collections;
 public class SoulController : MonoBehaviour {
 	public float RotateSpeed;
 	public float MoveSpeed;
+	public int HealAmount = 1;
 	private GameObject player;
 	private float soulTimer;
 
@@ -32,7 +33,9 @@ public class SoulController : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag ("Player")) {
-			player.GetComponent<MechController>().incrementSoulScore();
+			MechController playerController = player.GetComponent<MechController>();
+			playerController.incrementSoulScore();
+			playerController.restoreHealth(HealAmount);
 			Destroy (this.gameObject);
 		}
 	}

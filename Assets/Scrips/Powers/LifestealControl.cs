@@ -4,7 +4,7 @@ using System.Collections;
 public class LifestealControl : MonoBehaviour {
 	public float MoveSpeed = 20.0f;
 	public float RotateSpeed = 1.0f;
-	public int HealAmount = 1;
+	public int HealAmount = 2;
 
 	// Use this for initialization
 	void Start () {
