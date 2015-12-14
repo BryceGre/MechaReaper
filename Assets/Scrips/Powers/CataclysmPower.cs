@@ -2,7 +2,10 @@
 using System.Collections;
 
 public class CataclysmPower : Power {
-	private float suckCount;
+	private Vector3 cameraPos;
+	
+	public Transform PowerFX;
+	private Transform fxInstance = null;
 
 	private const float moveSpeed = 100.0f;
 
@@ -12,7 +15,14 @@ public class CataclysmPower : Power {
 	
 	public override void Update() {
 		base.Update ();
+		
+		if (durationCount > 0.0f) {
+			Camera.main.transform.localPosition = cameraPos + (Random.insideUnitSphere / 10);
+		}
 
+		if (fxInstance != null) {
+			fxInstance.gameObject.transform.localScale *= 1.25f;
+		}
 	}
 
 	void LateUpdate() {
@@ -34,6 +44,19 @@ public class CataclysmPower : Power {
 			enemy.GetComponent<EnemyController>().destroyEnemy();
 		}
 
+		cameraPos = Camera.main.transform.localPosition;
+
+		if (fxInstance != null)
+			Destroy (fxInstance.gameObject);
+		fxInstance = (Transform)Instantiate(PowerFX, this.gameObject.transform.position, Quaternion.identity);
+
 		return true;
+	}
+
+	
+	protected override void onDurationEnd() {
+		Camera.main.transform.localPosition = cameraPos;
+		if (fxInstance != null)
+			Destroy(fxInstance.gameObject);
 	}
 }
